@@ -503,7 +503,7 @@ class KH_Shortcodes {
 				'year'            => '',
 				'category'        => '',
 				'show_navigation' => 'false',
-				'limit'           => 20,
+				'limit'           => 5,
 				'show_all_link'   => 'true',
 				'all_link_url'    => '/veranstaltungen/',
 			),

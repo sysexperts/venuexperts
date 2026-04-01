@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.16.0
+Stable tag: 1.16.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,7 +72,7 @@ Beispiel: `[kh_upcoming_events limit="3"]`
 Zeigt Event-Programm im 2-Spalten Layout (60% Events, 40% News)
 
 Parameter:
-* limit - Anzahl Events (Standard: 20)
+* limit - Anzahl Events (Standard: 5)
 * month - Monat (1-12, optional für monatliche Ansicht)
 * year - Jahr (optional für monatliche Ansicht)
 * category - Kategorie-Slug
@@ -81,7 +81,7 @@ Parameter:
 * all_link_url - URL für "Alle Veranstaltungen" Link (Standard: /veranstaltungen/)
 
 Beispiele:
-`[kh_event_program]` - Zeigt die nächsten 20 Events mit News-Bereich
+`[kh_event_program]` - Zeigt die nächsten 5 Events mit News-Bereich
 `[kh_event_program limit="10"]` - Zeigt die nächsten 10 Events
 `[kh_event_program show_all_link="false"]` - Ohne "Alle Veranstaltungen" Link
 
