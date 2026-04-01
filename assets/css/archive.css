@@ -1,0 +1,97 @@
+/**
+ * Event Archive Grid Design
+ * Im Highlights-Stil
+ *
+ * @package KulturhausEvents
+ * @since   1.18.0
+ */
+
+/* Archive Header */
+.kh-events-archive__header {
+	text-align: center;
+	margin-bottom: 60px;
+}
+
+.kh-events-archive__title {
+	font-size: 48px;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: #000;
+	margin: 0;
+	letter-spacing: 1px;
+}
+
+/* Events Grid */
+.kh-events-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 40px;
+	max-width: 1400px;
+	margin: 0 auto 60px;
+	padding: 0 20px;
+}
+
+/* Empty State */
+.kh-events-archive__empty {
+	text-align: center;
+	padding: 80px 20px;
+	color: #666;
+	font-size: 18px;
+}
+
+/* Pagination */
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin: 60px 0;
+	padding: 0 20px;
+}
+
+.pagination .page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	height: 44px;
+	padding: 0 16px;
+	background: #fff;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	color: #000;
+	font-weight: 700;
+	text-decoration: none;
+	transition: all 0.3s ease;
+}
+
+.pagination .page-numbers:hover,
+.pagination .page-numbers.current {
+	background: #dc143c;
+	border-color: #dc143c;
+	color: #fff;
+	transform: translateY(-2px);
+}
+
+.pagination .page-numbers.dots {
+	border: none;
+	background: transparent;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+	.kh-events-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 30px;
+	}
+}
+
+@media (max-width: 768px) {
+	.kh-events-archive__title {
+		font-size: 32px;
+	}
+
+	.kh-events-grid {
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
+}

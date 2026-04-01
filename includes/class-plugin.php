@@ -233,6 +233,17 @@ class KH_Plugin {
 			'all'
 		);
 
+		// Archive CSS auf Event-Archiv-Seiten
+		if ( is_post_type_archive( 'kh_event' ) ) {
+			wp_enqueue_style(
+				'kh-events-archive',
+				KH_EVENTS_PLUGIN_URL . 'assets/css/archive.css',
+				array(),
+				KH_EVENTS_VERSION,
+				'all'
+			);
+		}
+
 		// Andere CSS nur auf Event-Seiten
 		if ( ! is_singular( 'kh_event' ) && ! is_post_type_archive( 'kh_event' ) ) {
 			return;

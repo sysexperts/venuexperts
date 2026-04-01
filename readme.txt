@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.17.1
+Stable tag: 1.18.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,14 @@ Beispiele:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.18.0 =
+* **DESIGN:** Veranstaltungsarchiv im Highlights-Design
+* 3-Spalten Grid-Layout (responsive: 2 Spalten auf Tablet, 1 Spalte auf Mobile)
+* Event-Karten mit Bild, Datum, Titel
+* Hover-Effekte: Lift + Scale + Schatten
+* Schöne Pagination mit roten Buttons
+* Neue CSS-Datei: archive.css
 
 = 1.17.1 =
 * **ÄNDERUNG:** News-Bereich scrollt jetzt mit (nicht mehr sticky)
@@ -394,11 +402,4 @@ Beispiele:
 * Custom Post Types: Events, Venues, Organizer
 * Taxonomien: Kategorien, Schlagwörter
 * Meta-Boxen für Veranstaltungsdetails
-* Einzelansicht und Archivansicht
-* Admin-Spalten mit Sortierung
-* BITV 2.0 / WCAG 2.1 AA konformes Frontend
-* Shortcodes: [kh_events] und [kh_upcoming_events]
-* iCal/ICS-Export für einzelne Veranstaltungen
-* Filter-Widget für Datum und Kategorien
-* Kommende Events Widget für Sidebar
-* Query-Filter für Event-Archive
+* Einzelansicht und Archiv
