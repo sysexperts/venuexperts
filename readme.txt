@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.19.0
+Stable tag: 1.20.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -101,6 +101,24 @@ Beispiele:
 Navigation: Über Pfeile zwischen Monaten wechseln
 Events: Klickbare Event-Badges in jedem Tag
 Heute: Rot markiert
+
+**[kh_event_search]**
+Zeigt Suchfeld und Filter für Events an
+
+Parameter:
+* show_filters - true/false (Standard: true)
+* results_layout - grid/list (Standard: grid)
+
+Beispiele:
+`[kh_event_search]` - Volle Suche mit allen Filtern
+`[kh_event_search show_filters="false"]` - Nur Suchfeld
+
+Features:
+* AJAX Live-Suche (ohne Reload)
+* Filter: Kategorie, Monat, Ort
+* "Filter zurücksetzen" Button
+* Ergebnisse im Grid-Layout (3 Spalten)
+* Responsive Design
 
 == Widgets ==
 

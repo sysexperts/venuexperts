@@ -28,6 +28,7 @@ class KH_Shortcodes {
 		add_shortcode( 'kh_event_highlights', array( $this, 'event_highlights' ) );
 		add_shortcode( 'kh_event_program', array( $this, 'event_program' ) );
 		add_shortcode( 'kh_event_calendar', array( $this, 'event_calendar' ) );
+		add_shortcode( 'kh_event_search', array( $this, 'event_search' ) );
 	}
 
 	/**
@@ -941,6 +942,266 @@ class KH_Shortcodes {
 				for ( $i = $last_day_of_week; $i < 7; $i++ ) {
 					echo '<div class="kh-calendar-day kh-calendar-day--empty"></div>';
 				}
+				?>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Shortcode: [kh_event_search]
+	 *
+	 * Zeigt Suchfeld und Filter für Events an.
+	 *
+	 * Attribute:
+	 * - show_filters: true/false (Standard: true)
+	 * - results_layout: grid/list (Standard: grid)
+	 *
+	 * @param array<string, mixed> $atts Shortcode-Attribute.
+	 * @return string HTML-Ausgabe.
+	 */
+	public function event_search( $atts ): string {
+		$atts = shortcode_atts(
+			array(
+				'show_filters'   => 'true',
+				'results_layout' => 'grid',
+			),
+			$atts,
+			'kh_event_search'
+		);
+
+		$show_filters = $atts['show_filters'] === 'true';
+
+		// Kategorien abrufen
+		$categories = get_terms(
+			array(
+				'taxonomy'   => KH_Event_Category::TAXONOMY,
+				'hide_empty' => true,
+			)
+		);
+
+		// Veranstaltungsorte abrufen
+		$venues = get_posts(
+			array(
+				'post_type'      => 'venue',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			)
+		);
+
+		ob_start();
+		?>
+		<div class="kh-event-search">
+			<!-- Search Form -->
+			<form class="kh-search-form" id="kh-search-form">
+				<div class="kh-search-header">
+					<h2 class="kh-search-title">Veranstaltungen suchen</h2>
+					<button type="button" class="kh-search-reset">
+						Filter zurücksetzen
+					</button>
+				</div>
+
+				<div class="kh-search-fields">
+					<!-- Suchfeld -->
+					<div class="kh-search-field">
+						<label for="kh-search-query">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<circle cx="11" cy="11" r="8"></circle>
+								<path d="m21 21-4.35-4.35"></path>
+							</svg>
+							Suche
+						</label>
+						<input 
+							type="text" 
+							id="kh-search-query" 
+							name="query" 
+							placeholder="Event-Name oder Stichwort..."
+							autocomplete="off"
+						>
+					</div>
+
+					<?php if ( $show_filters ) : ?>
+						<!-- Kategorie Filter -->
+						<div class="kh-search-field">
+							<label for="kh-search-category">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M4 4h7l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
+								</svg>
+								Kategorie
+							</label>
+							<select id="kh-search-category" name="category">
+								<option value="">Alle Kategorien</option>
+								<?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
+									<?php foreach ( $categories as $category ) : ?>
+										<option value="<?php echo esc_attr( $category->slug ); ?>">
+											<?php echo esc_html( $category->name ); ?>
+										</option>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</select>
+						</div>
+
+						<!-- Monat Filter -->
+						<div class="kh-search-field">
+							<label for="kh-search-month">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+									<line x1="16" y1="2" x2="16" y2="6"></line>
+									<line x1="8" y1="2" x2="8" y2="6"></line>
+									<line x1="3" y1="10" x2="21" y2="10"></line>
+								</svg>
+								Monat
+							</label>
+							<select id="kh-search-month" name="month">
+								<option value="">Alle Monate</option>
+								<?php
+								$current_month = (int) current_time( 'n' );
+								$current_year = (int) current_time( 'Y' );
+								for ( $i = 0; $i < 12; $i++ ) {
+									$month = ( $current_month + $i - 1 ) % 12 + 1;
+									$year = $current_year + floor( ( $current_month + $i - 1 ) / 12 );
+									$month_name = date_i18n( 'F Y', mktime( 0, 0, 0, $month, 1, $year ) );
+									$value = $year . '-' . str_pad( (string) $month, 2, '0', STR_PAD_LEFT );
+									?>
+									<option value="<?php echo esc_attr( $value ); ?>">
+										<?php echo esc_html( $month_name ); ?>
+									</option>
+									<?php
+								}
+								?>
+							</select>
+						</div>
+
+						<!-- Ort Filter -->
+						<div class="kh-search-field">
+							<label for="kh-search-venue">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+									<circle cx="12" cy="10" r="3"></circle>
+								</svg>
+								Ort
+							</label>
+							<select id="kh-search-venue" name="venue">
+								<option value="">Alle Orte</option>
+								<?php if ( ! empty( $venues ) ) : ?>
+									<?php foreach ( $venues as $venue ) : ?>
+										<option value="<?php echo esc_attr( $venue->ID ); ?>">
+											<?php echo esc_html( $venue->post_title ); ?>
+										</option>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</select>
+						</div>
+					<?php endif; ?>
+				</div>
+
+				<button type="submit" class="kh-search-submit">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<circle cx="11" cy="11" r="8"></circle>
+						<path d="m21 21-4.35-4.35"></path>
+					</svg>
+					Suchen
+				</button>
+			</form>
+
+			<!-- Loading -->
+			<div class="kh-search-loading">
+				<div class="kh-search-spinner"></div>
+				<p>Suche läuft...</p>
+			</div>
+
+			<!-- Results -->
+			<div class="kh-search-results">
+				<?php
+				// Initial results: alle kommenden Events
+				$initial_events = new WP_Query(
+					array(
+						'post_type'      => 'event',
+						'posts_per_page' => 12,
+						'post_status'    => 'publish',
+						'meta_key'       => '_kh_event_start_date',
+						'orderby'        => 'meta_value',
+						'order'          => 'ASC',
+						'meta_query'     => array(
+							array(
+								'key'     => '_kh_event_start_date',
+								'value'   => current_time( 'Y-m-d' ),
+								'compare' => '>=',
+								'type'    => 'DATE',
+							),
+						),
+					)
+				);
+
+				if ( $initial_events->have_posts() ) :
+					?>
+					<div class="kh-search-results-header">
+						<div class="kh-search-results-count">
+							<strong><?php echo esc_html( $initial_events->found_posts ); ?></strong> Veranstaltungen gefunden
+						</div>
+					</div>
+
+					<div class="kh-search-results-grid">
+						<?php
+						while ( $initial_events->have_posts() ) :
+							$initial_events->the_post();
+							$event_id = get_the_ID();
+							$start_date = get_post_meta( $event_id, '_kh_event_start_date', true );
+							$venue_id = get_post_meta( $event_id, '_kh_event_venue_id', true );
+							
+							$venue_name = '';
+							if ( $venue_id ) {
+								$venue = get_post( (int) $venue_id );
+								if ( $venue ) {
+									$venue_name = $venue->post_title;
+								}
+							}
+							?>
+							<a href="<?php the_permalink(); ?>" class="kh-highlight-card">
+								<?php if ( has_post_thumbnail() ) : ?>
+									<div class="kh-highlight-image">
+										<?php the_post_thumbnail( 'medium' ); ?>
+									</div>
+								<?php endif; ?>
+								
+								<div class="kh-highlight-content">
+									<div class="kh-highlight-date">
+										<?php echo esc_html( wp_date( 'd.m.Y, H:i', strtotime( $start_date ) ) ); ?> Uhr
+									</div>
+									
+									<h3 class="kh-highlight-title"><?php the_title(); ?></h3>
+									
+									<?php if ( $venue_name ) : ?>
+										<div class="kh-highlight-venue">
+											<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+												<circle cx="12" cy="10" r="3"></circle>
+											</svg>
+											<?php echo esc_html( $venue_name ); ?>
+										</div>
+									<?php endif; ?>
+								</div>
+							</a>
+							<?php
+						endwhile;
+						wp_reset_postdata();
+						?>
+					</div>
+					<?php
+				else :
+					?>
+					<div class="kh-search-no-results">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<circle cx="11" cy="11" r="8"></circle>
+							<path d="m21 21-4.35-4.35"></path>
+						</svg>
+						<h3>Keine Veranstaltungen gefunden</h3>
+						<p>Versuchen Sie es mit anderen Suchkriterien.</p>
+					</div>
+					<?php
+				endif;
 				?>
 			</div>
 		</div>

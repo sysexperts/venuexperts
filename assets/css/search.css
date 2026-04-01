@@ -1,0 +1,286 @@
+/**
+ * Event Search & Filter Styles
+ *
+ * @package KulturhausEvents
+ * @since   1.20.0
+ */
+
+/* ===========================
+   Search Container
+   =========================== */
+.kh-event-search {
+	max-width: 1200px;
+	margin: 0 auto 40px;
+	padding: 0;
+}
+
+/* Search Form */
+.kh-search-form {
+	background: #fff;
+	border-radius: 12px;
+	padding: 30px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	margin-bottom: 30px;
+}
+
+.kh-search-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 25px;
+	padding-bottom: 20px;
+	border-bottom: 2px solid #f0f0f0;
+}
+
+.kh-search-title {
+	font-size: 24px;
+	font-weight: 700;
+	margin: 0;
+	color: #000;
+}
+
+.kh-search-reset {
+	background: transparent;
+	border: 2px solid #dc143c;
+	color: #dc143c;
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.kh-search-reset:hover {
+	background: #dc143c;
+	color: #fff;
+}
+
+/* Search Fields Grid */
+.kh-search-fields {
+	display: grid;
+	grid-template-columns: 2fr 1fr 1fr 1fr;
+	gap: 15px;
+	margin-bottom: 20px;
+}
+
+.kh-search-field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.kh-search-field label {
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.kh-search-field label svg {
+	width: 16px;
+	height: 16px;
+	color: #dc143c;
+}
+
+.kh-search-field input,
+.kh-search-field select {
+	width: 100%;
+	padding: 12px 16px;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	font-size: 15px;
+	transition: all 0.3s ease;
+	background: #fff;
+}
+
+.kh-search-field input:focus,
+.kh-search-field select:focus {
+	outline: none;
+	border-color: #dc143c;
+	box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+}
+
+.kh-search-field input::placeholder {
+	color: #999;
+}
+
+/* Search Button */
+.kh-search-submit {
+	background: #dc143c;
+	color: #fff;
+	border: none;
+	padding: 14px 32px;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+}
+
+.kh-search-submit:hover {
+	background: #b91c1c;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+}
+
+.kh-search-submit svg {
+	width: 20px;
+	height: 20px;
+}
+
+/* Loading State */
+.kh-search-loading {
+	display: none;
+	text-align: center;
+	padding: 40px;
+	color: #666;
+}
+
+.kh-search-loading.active {
+	display: block;
+}
+
+.kh-search-spinner {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	border: 4px solid #f0f0f0;
+	border-top-color: #dc143c;
+	border-radius: 50%;
+	animation: kh-spin 0.8s linear infinite;
+}
+
+@keyframes kh-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* Results */
+.kh-search-results {
+	margin-top: 30px;
+}
+
+.kh-search-results-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #f0f0f0;
+}
+
+.kh-search-results-count {
+	font-size: 16px;
+	color: #666;
+}
+
+.kh-search-results-count strong {
+	color: #dc143c;
+	font-weight: 700;
+}
+
+.kh-search-results-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 25px;
+}
+
+/* No Results */
+.kh-search-no-results {
+	text-align: center;
+	padding: 60px 20px;
+	background: #f9f9f9;
+	border-radius: 12px;
+}
+
+.kh-search-no-results svg {
+	width: 80px;
+	height: 80px;
+	color: #ccc;
+	margin-bottom: 20px;
+}
+
+.kh-search-no-results h3 {
+	font-size: 20px;
+	color: #333;
+	margin: 0 0 10px;
+}
+
+.kh-search-no-results p {
+	font-size: 15px;
+	color: #666;
+	margin: 0;
+}
+
+/* ===========================
+   Responsive Design
+   =========================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+	.kh-search-fields {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.kh-search-field:first-child {
+		grid-column: 1 / -1;
+	}
+
+	.kh-search-results-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+	.kh-search-form {
+		padding: 20px;
+	}
+
+	.kh-search-header {
+		flex-direction: column;
+		gap: 15px;
+		align-items: flex-start;
+	}
+
+	.kh-search-title {
+		font-size: 20px;
+	}
+
+	.kh-search-fields {
+		grid-template-columns: 1fr;
+	}
+
+	.kh-search-field:first-child {
+		grid-column: 1;
+	}
+
+	.kh-search-results-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	.kh-search-submit,
+	.kh-search-reset,
+	.kh-search-field input,
+	.kh-search-field select {
+		transition: none;
+	}
+
+	.kh-search-submit:hover {
+		transform: none;
+	}
+
+	.kh-search-spinner {
+		animation: none;
+	}
+}

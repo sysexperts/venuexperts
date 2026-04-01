@@ -233,6 +233,43 @@ class KH_Plugin {
 			'all'
 		);
 
+		// Calendar CSS immer laden (für Kalender-Shortcode)
+		wp_enqueue_style(
+			'kh-events-calendar',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/calendar.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
+		// Search CSS immer laden (für Such-Shortcode)
+		wp_enqueue_style(
+			'kh-events-search',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/search.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
+		// Search JS immer laden
+		wp_enqueue_script(
+			'kh-events-search',
+			KH_EVENTS_PLUGIN_URL . 'assets/js/search.js',
+			array( 'jquery' ),
+			KH_EVENTS_VERSION,
+			true
+		);
+
+		// AJAX-Daten für Search JS
+		wp_localize_script(
+			'kh-events-search',
+			'khSearchData',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'kh_search_nonce' ),
+			)
+		);
+
 		// Archive CSS auf Event-Archiv-Seiten
 		if ( is_post_type_archive( 'kh_event' ) ) {
 			wp_enqueue_style(
