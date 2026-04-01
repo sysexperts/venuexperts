@@ -3,7 +3,7 @@
  * Plugin Name:       Kulturhaus Events
  * Plugin URI:        https://github.com/sysexperts/venuexperts
  * Description:       Professionelles Veranstaltungsmanagement für behördliche und kulturelle Einrichtungen. DSGVO-konform, barrierefrei (BITV 2.0 / WCAG 2.1 AA).
- * Version:           1.0.0
+ * Version:           1.12.0
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Author:            SysExperts
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin-Konstanten.
  */
-define( 'KH_EVENTS_VERSION', '1.0.0' );
+define( 'KH_EVENTS_VERSION', '1.12.0' );
 define( 'KH_EVENTS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'KH_EVENTS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'KH_EVENTS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -83,6 +83,12 @@ spl_autoload_register( function ( string $class_name ): void {
  */
 register_activation_hook( __FILE__, function (): void {
 	require_once KH_EVENTS_PLUGIN_DIR . 'includes/class-activator.php';
+	require_once KH_EVENTS_PLUGIN_DIR . 'includes/post-types/class-event.php';
+	require_once KH_EVENTS_PLUGIN_DIR . 'includes/post-types/class-venue.php';
+	require_once KH_EVENTS_PLUGIN_DIR . 'includes/post-types/class-organizer.php';
+	require_once KH_EVENTS_PLUGIN_DIR . 'includes/post-types/class-pricing-model.php';
+	require_once KH_EVENTS_PLUGIN_DIR . 'includes/taxonomies/class-event-category.php';
+	require_once KH_EVENTS_PLUGIN_DIR . 'includes/taxonomies/class-event-tag.php';
 	KH_Activator::activate();
 } );
 

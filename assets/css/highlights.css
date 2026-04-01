@@ -1,0 +1,347 @@
+/**
+ * Event Highlights Modul
+ * 2-Spalten-Layout: Text links, 3 Event-Karten rechts
+ *
+ * @package KulturhausEvents
+ * @since   1.11.0
+ */
+
+/* ===========================
+   Highlights Section
+   =========================== */
+.kh-event-highlights {
+	padding: 80px 20px;
+	max-width: 1400px;
+	margin: 0 auto;
+	position: relative;
+	overflow: hidden;
+}
+
+/* Dekorative gelbe Linien */
+.kh-event-highlights::before,
+.kh-event-highlights::after {
+	content: '';
+	position: absolute;
+	height: 4px;
+	background: #ffc107;
+	width: 300px;
+	top: 40px;
+	z-index: 0;
+}
+
+.kh-event-highlights::before {
+	left: -50px;
+	transform: rotate(-25deg);
+}
+
+.kh-event-highlights::after {
+	right: -50px;
+	transform: rotate(25deg);
+}
+
+/* Container: 2-Spalten-Layout */
+.kh-highlights-container {
+	display: grid;
+	grid-template-columns: 400px 1fr;
+	gap: 60px;
+	align-items: center;
+	position: relative;
+	z-index: 1;
+}
+
+/* ===========================
+   Text-Block Links
+   =========================== */
+.kh-highlights-text {
+	padding: 40px 0;
+}
+
+.kh-highlights-text__title {
+	font-size: 72px;
+	font-weight: 900;
+	line-height: 0.85;
+	margin: 0 0 24px 0;
+	color: #000;
+	text-transform: uppercase;
+	letter-spacing: -0.04em;
+	position: relative;
+	display: inline-block;
+}
+
+/* Gelber Highlight-Balken unter "HIGH" */
+.kh-highlights-text__title::after {
+	content: '';
+	position: absolute;
+	bottom: 12px;
+	left: 0;
+	width: 100%;
+	height: 20px;
+	background: #ffc107;
+	z-index: -1;
+}
+
+.kh-highlights-text__subtitle {
+	font-size: 16px;
+	font-weight: 700;
+	color: #000;
+	margin: 0 0 20px 0;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.kh-highlights-text__description {
+	font-size: 15px;
+	line-height: 1.7;
+	color: #333;
+	margin: 0 0 32px 0;
+}
+
+.kh-highlights-text__button {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	padding: 16px 32px;
+	background: #ffc107;
+	color: #000;
+	font-weight: 700;
+	font-size: 13px;
+	text-decoration: none;
+	border-radius: 0;
+	transition: all 0.3s ease;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	box-shadow: 0 4px 16px rgba(255, 193, 7, 0.3);
+}
+
+.kh-highlights-text__button:hover {
+	background: #ffb300;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 24px rgba(255, 193, 7, 0.5);
+	color: #000;
+}
+
+.kh-highlights-text__button svg {
+	transition: transform 0.3s ease;
+}
+
+.kh-highlights-text__button:hover svg {
+	transform: translateX(5px);
+}
+
+/* ===========================
+   Event-Karten Rechts
+   =========================== */
+.kh-highlights-cards {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 30px;
+	position: relative;
+}
+
+/* Highlight Card */
+.kh-highlight-card {
+	position: relative;
+	border-radius: 20px;
+	overflow: hidden;
+	background: #fff;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+	transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+	transform: translateY(0) rotate(0deg);
+}
+
+.kh-highlight-card:nth-child(1) {
+	transform: rotate(-3deg) translateY(10px);
+}
+
+.kh-highlight-card:nth-child(2) {
+	transform: rotate(2deg) translateY(-10px);
+}
+
+.kh-highlight-card:nth-child(3) {
+	transform: rotate(-2deg) translateY(5px);
+}
+
+.kh-highlight-card:hover {
+	transform: translateY(-15px) rotate(0deg) scale(1.05);
+	box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+	z-index: 10;
+}
+
+.kh-highlight-card__link {
+	display: block;
+	text-decoration: none;
+	color: inherit;
+}
+
+.kh-highlight-card__image {
+	position: relative;
+	width: 100%;
+	padding-top: 133.33%; /* 3:4 Aspect Ratio */
+	overflow: hidden;
+	background: #f0f0f0;
+}
+
+.kh-highlight-card__image img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kh-highlight-card:hover .kh-highlight-card__image img {
+	transform: scale(1.08);
+}
+
+.kh-highlight-card__content {
+	padding: 28px;
+	background: #fff;
+	position: relative;
+}
+
+.kh-highlight-card__content::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 4px;
+	background: #ffc107;
+}
+
+.kh-highlight-card__date {
+	display: inline-block;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
+	color: #000;
+	margin-bottom: 14px;
+	text-transform: uppercase;
+}
+
+.kh-highlight-card__title {
+	font-size: 22px;
+	font-weight: 700;
+	line-height: 1.25;
+	margin: 0;
+	color: #000;
+	transition: color 0.3s ease;
+	text-transform: uppercase;
+}
+
+.kh-highlight-card:hover .kh-highlight-card__title {
+	color: #ffc107;
+}
+
+/* Empty State */
+.kh-highlights-empty {
+	text-align: center;
+	padding: 60px 20px;
+	color: #666;
+	font-size: 18px;
+}
+
+/* ===========================
+   Responsive Design
+   =========================== */
+
+/* Tablet */
+@media (max-width: 1200px) {
+	.kh-highlights-container {
+		grid-template-columns: 350px 1fr;
+		gap: 40px;
+	}
+
+	.kh-highlights-text__title {
+		font-size: 56px;
+	}
+
+	.kh-highlights-cards {
+		gap: 20px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.kh-highlights-container {
+		grid-template-columns: 1fr;
+		gap: 50px;
+	}
+
+	.kh-highlights-text {
+		text-align: center;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.kh-highlights-text__button {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.kh-highlights-cards {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+	.kh-event-highlights {
+		padding: 50px 15px;
+	}
+
+	.kh-highlights-text__title {
+		font-size: 48px;
+	}
+
+	.kh-highlights-text__subtitle {
+		font-size: 14px;
+	}
+
+	.kh-highlights-text__description {
+		font-size: 14px;
+	}
+
+	.kh-highlights-cards {
+		grid-template-columns: 1fr;
+		gap: 30px;
+	}
+
+	.kh-highlight-card:nth-child(1),
+	.kh-highlight-card:nth-child(2),
+	.kh-highlight-card:nth-child(3) {
+		transform: rotate(0deg) translateY(0);
+	}
+
+	.kh-highlight-card:hover {
+		transform: translateY(-8px) scale(1.02);
+	}
+}
+
+@media (max-width: 480px) {
+	.kh-highlights-text__title {
+		font-size: 36px;
+	}
+
+	.kh-highlight-card__content {
+		padding: 20px;
+	}
+
+	.kh-highlight-card__title {
+		font-size: 18px;
+	}
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	.kh-highlight-card,
+	.kh-highlight-card__image img,
+	.kh-highlights-header__button {
+		transition: none;
+	}
+
+	.kh-highlight-card:hover {
+		transform: none;
+	}
+}

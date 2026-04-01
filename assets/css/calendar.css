@@ -1,0 +1,288 @@
+/**
+ * Event Calendar Styles
+ *
+ * @package KulturhausEvents
+ * @since   1.12.0
+ */
+
+/* ===========================
+   Calendar Container
+   =========================== */
+.kh-calendar {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.kh-calendar-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+	padding-bottom: 20px;
+	border-bottom: 2px solid #f0f0f0;
+}
+
+.kh-calendar-title {
+	font-size: 28px;
+	font-weight: 700;
+	margin: 0;
+	color: #000;
+}
+
+.kh-calendar-nav {
+	background: #ffc107;
+	border: none;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	color: #000;
+}
+
+.kh-calendar-nav:hover {
+	background: #ffb300;
+	transform: scale(1.1);
+}
+
+.kh-calendar-nav svg {
+	width: 24px;
+	height: 24px;
+}
+
+/* ===========================
+   Calendar Grid
+   =========================== */
+.kh-calendar-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 2px;
+	background: #e0e0e0;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+/* Wochentage */
+.kh-calendar-weekday {
+	background: #f5f5f5;
+	padding: 12px;
+	text-align: center;
+	font-weight: 700;
+	font-size: 14px;
+	color: #666;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+/* Tage */
+.kh-calendar-day {
+	background: #fff;
+	min-height: 120px;
+	padding: 8px;
+	position: relative;
+	transition: all 0.3s ease;
+}
+
+.kh-calendar-day--empty {
+	background: #fafafa;
+	min-height: 120px;
+}
+
+.kh-calendar-day--today {
+	background: #fff9e6;
+	border: 2px solid #ffc107;
+}
+
+.kh-calendar-day--has-events {
+	cursor: pointer;
+}
+
+.kh-calendar-day--has-events:hover {
+	background: #f9f9f9;
+	transform: scale(1.02);
+	z-index: 10;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.kh-calendar-day__number {
+	display: block;
+	font-size: 16px;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 8px;
+}
+
+.kh-calendar-day--today .kh-calendar-day__number {
+	color: #ffc107;
+	font-size: 18px;
+}
+
+/* ===========================
+   Events im Kalender
+   =========================== */
+.kh-calendar-day__events {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.kh-calendar-event {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 6px;
+	background: #ffc107;
+	border-radius: 4px;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	font-size: 12px;
+	line-height: 1.3;
+}
+
+.kh-calendar-event:hover {
+	background: #ffb300;
+	transform: translateX(2px);
+}
+
+.kh-calendar-event__dot {
+	width: 6px;
+	height: 6px;
+	background: #000;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.kh-calendar-event__title {
+	color: #000;
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* ===========================
+   Responsive Design
+   =========================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+	.kh-calendar {
+		padding: 15px;
+	}
+
+	.kh-calendar-title {
+		font-size: 24px;
+	}
+
+	.kh-calendar-day {
+		min-height: 100px;
+	}
+
+	.kh-calendar-day--empty {
+		min-height: 100px;
+	}
+
+	.kh-calendar-event {
+		font-size: 11px;
+	}
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+	.kh-calendar {
+		padding: 10px;
+	}
+
+	.kh-calendar-header {
+		margin-bottom: 20px;
+		padding-bottom: 15px;
+	}
+
+	.kh-calendar-title {
+		font-size: 20px;
+	}
+
+	.kh-calendar-nav {
+		width: 36px;
+		height: 36px;
+	}
+
+	.kh-calendar-weekday {
+		padding: 8px 4px;
+		font-size: 12px;
+	}
+
+	.kh-calendar-day {
+		min-height: 80px;
+		padding: 6px;
+	}
+
+	.kh-calendar-day--empty {
+		min-height: 80px;
+	}
+
+	.kh-calendar-day__number {
+		font-size: 14px;
+	}
+
+	.kh-calendar-event {
+		font-size: 10px;
+		padding: 3px 4px;
+	}
+
+	.kh-calendar-event__title {
+		display: none; /* Nur Dots auf Mobile */
+	}
+}
+
+@media (max-width: 480px) {
+	.kh-calendar-grid {
+		gap: 1px;
+	}
+
+	.kh-calendar-day {
+		min-height: 60px;
+		padding: 4px;
+	}
+
+	.kh-calendar-day--empty {
+		min-height: 60px;
+	}
+
+	.kh-calendar-day__number {
+		font-size: 12px;
+		margin-bottom: 4px;
+	}
+
+	.kh-calendar-event {
+		padding: 2px;
+		justify-content: center;
+	}
+
+	.kh-calendar-event__dot {
+		width: 8px;
+		height: 8px;
+	}
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	.kh-calendar-day,
+	.kh-calendar-nav,
+	.kh-calendar-event {
+		transition: none;
+	}
+
+	.kh-calendar-day--has-events:hover {
+		transform: none;
+	}
+}

@@ -1,0 +1,29 @@
+NOTFALL: WordPress Admin nicht erreichbar
+==========================================
+
+SOFORT-LÖSUNG (ohne Server-Zugriff):
+-------------------------------------
+
+1. PLUGIN DEAKTIVIEREN via FTP/Dateimanager:
+   - Gehe zu: wp-content/plugins/
+   - Benenne den Ordner "kulturhaus-events" um in "kulturhaus-events-DEAKTIVIERT"
+   - WordPress lädt das Plugin nicht mehr
+   - Admin-Zugang sollte wieder funktionieren
+
+2. ALTERNATIVE: Plugin-Datei umbenennen:
+   - Gehe zu: wp-content/plugins/kulturhaus-events/
+   - Benenne "kulturhaus-events.php" um in "kulturhaus-events.php.bak"
+   - Plugin wird deaktiviert
+
+3. Nach Zugang wiedererlangt:
+   - Installiere die neue SAFE-MODE Version (kulturhaus-events-safe.zip)
+   - Diese Version lädt nur die absolut notwendigen Komponenten
+
+WICHTIG:
+--------
+Du brauchst Zugriff auf die WordPress-Dateien via:
+- FTP (FileZilla, etc.)
+- Hosting Control Panel (cPanel, Plesk, etc.)
+- Dateimanager deines Hosters
+
+Wenn du das nicht hast, kontaktiere deinen Hoster SOFORT!

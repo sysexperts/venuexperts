@@ -22,17 +22,17 @@ class KH_Activator {
 	 */
 	public static function activate(): void {
 		// Custom Post Types registrieren, damit Rewrite-Rules korrekt erstellt werden.
-		$event     = new KH_Event();
-		$venue     = new KH_Venue();
-		$organizer = new KH_Organizer();
+		$event         = new KH_Event();
+		$venue         = new KH_Venue();
+		$organizer     = new KH_Organizer();
+		$pricing_model = new KH_Pricing_Model();
+		$category      = new KH_Event_Category();
+		$tag           = new KH_Event_Tag();
 
 		$event->register();
 		$venue->register();
 		$organizer->register();
-
-		$category = new KH_Event_Category();
-		$tag      = new KH_Event_Tag();
-
+		$pricing_model->register();
 		$category->register();
 		$tag->register();
 
