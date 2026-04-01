@@ -29,13 +29,25 @@ $time_format = get_option( 'kh_time_format', 'H:i' );
 
 // Venue-Daten
 $venue = null;
+$venue_name = '';
 $venue_city = '';
 $venue_address = '';
 if ( $venue_id ) {
 	$venue = get_post( (int) $venue_id );
-	if ( $venue ) {
+	if ( $venue && $venue->post_status === 'publish' ) {
+		$venue_name = $venue->post_title;
 		$venue_city = get_post_meta( $venue->ID, '_kh_venue_city', true );
 		$venue_address = get_post_meta( $venue->ID, '_kh_venue_address', true );
+	}
+}
+
+// Organizer-Daten
+$organizer = null;
+$organizer_name = '';
+if ( $organizer_id ) {
+	$organizer = get_post( (int) $organizer_id );
+	if ( $organizer && $organizer->post_status === 'publish' ) {
+		$organizer_name = $organizer->post_title;
 	}
 }
 ?>
@@ -143,7 +155,7 @@ if ( $venue_id ) {
 					<?php endif; ?>
 
 					<!-- Ort -->
-					<?php if ( $venue && $venue_city ) : ?>
+					<?php if ( $venue_name ) : ?>
 						<div class="kh-info-item">
 							<div class="kh-info-icon">
 								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -152,7 +164,12 @@ if ( $venue_id ) {
 								</svg>
 							</div>
 							<div class="kh-info-text">
-								<?php echo esc_html( $venue_city ); ?>
+								<?php 
+								echo esc_html( $venue_name );
+								if ( $venue_city ) {
+									echo ', ' . esc_html( $venue_city );
+								}
+								?>
 							</div>
 						</div>
 					<?php endif; ?>
@@ -192,6 +209,26 @@ if ( $venue_id ) {
 							</div>
 						</div>
 					<?php endif; ?>
+
+					<!-- Veranstalter -->
+					<?php if ( $organizer_id ) : 
+						$organizer = get_post( (int) $organizer_id );
+						if ( $organizer ) :
+					?>
+						<div class="kh-info-item">
+							<div class="kh-info-icon">
+								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+									<circle cx="9" cy="7" r="4"></circle>
+									<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+									<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+								</svg>
+							</div>
+							<div class="kh-info-text">
+								<?php echo esc_html( $organizer->post_title ); ?>
+							</div>
+						</div>
+					<?php endif; endif; ?>
 
 				</div>
 

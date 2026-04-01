@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.18.1
+Stable tag: 1.18.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,12 @@ Beispiele:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.18.2 =
+* **BUGFIX:** Buttons jetzt volle Breite (100%) und gleich groß
+* **BUGFIX:** Ort und Veranstalter Anzeige-Logik verbessert
+* Venue und Organizer müssen "veröffentlicht" sein um angezeigt zu werden
+* Besseres Padding für Buttons (14px statt 10px)
 
 = 1.18.1 =
 * **BUGFIX:** Tickets-Button Hintergrundfarbe (rot) hinzugefügt
