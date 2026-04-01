@@ -224,6 +224,15 @@ class KH_Plugin {
 			)
 		);
 
+		// Program CSS immer laden (für Shortcodes auf allen Seiten)
+		wp_enqueue_style(
+			'kh-events-program',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/program.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
 		// Andere CSS nur auf Event-Seiten
 		if ( ! is_singular( 'kh_event' ) && ! is_post_type_archive( 'kh_event' ) ) {
 			return;
@@ -240,14 +249,6 @@ class KH_Plugin {
 		wp_enqueue_style(
 			'kh-events-design',
 			KH_EVENTS_PLUGIN_URL . 'assets/css/event-design.css',
-			array(),
-			KH_EVENTS_VERSION,
-			'all'
-		);
-
-		wp_enqueue_style(
-			'kh-events-program',
-			KH_EVENTS_PLUGIN_URL . 'assets/css/program.css',
 			array(),
 			KH_EVENTS_VERSION,
 			'all'
