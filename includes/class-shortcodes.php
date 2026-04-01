@@ -625,11 +625,58 @@ class KH_Shortcodes {
 				<!-- News Rechts (40%) -->
 				<div class="kh-program-news">
 					<h2 class="kh-program-news__title"><?php esc_html_e( 'News', 'kulturhaus-events' ); ?></h2>
-					<div class="kh-program-news__content">
-						<p class="kh-program-news__placeholder">
-							<?php esc_html_e( 'Hier können Sie News veröffentlichen.', 'kulturhaus-events' ); ?>
-						</p>
-					</div>
+					<?php
+					// Neueste Beiträge abfragen
+					$news_query = new WP_Query(
+						array(
+							'post_type'      => 'post',
+							'posts_per_page' => 5,
+							'post_status'    => 'publish',
+							'orderby'        => 'date',
+							'order'          => 'DESC',
+						)
+					);
+					?>
+
+					<?php if ( $news_query->have_posts() ) : ?>
+						<div class="kh-program-news__list">
+							<?php while ( $news_query->have_posts() ) : $news_query->the_post(); ?>
+								<article class="kh-news-item">
+									<?php if ( has_post_thumbnail() ) : ?>
+										<div class="kh-news-item__image">
+											<a href="<?php the_permalink(); ?>">
+												<?php the_post_thumbnail( 'thumbnail' ); ?>
+											</a>
+										</div>
+									<?php endif; ?>
+									
+									<div class="kh-news-item__content">
+										<time class="kh-news-item__date">
+											<?php echo get_the_date( 'd.m.Y' ); ?>
+										</time>
+										<h3 class="kh-news-item__title">
+											<a href="<?php the_permalink(); ?>">
+												<?php the_title(); ?>
+											</a>
+										</h3>
+										<div class="kh-news-item__excerpt">
+											<?php echo wp_trim_words( get_the_excerpt(), 15 ); ?>
+										</div>
+										<a href="<?php the_permalink(); ?>" class="kh-news-item__link">
+											<?php esc_html_e( 'Weiterlesen', 'kulturhaus-events' ); ?> →
+										</a>
+									</div>
+								</article>
+							<?php endwhile; ?>
+						</div>
+					<?php else : ?>
+						<div class="kh-program-news__content">
+							<p class="kh-program-news__placeholder">
+								<?php esc_html_e( 'Noch keine News vorhanden. Erstellen Sie Beiträge unter "Beiträge" → "Erstellen".', 'kulturhaus-events' ); ?>
+							</p>
+						</div>
+					<?php endif; ?>
+					<?php wp_reset_postdata(); ?>
 				</div>
 
 			</div>
