@@ -39,10 +39,25 @@ class KH_Event_Filter_Widget extends WP_Widget {
 	 * @param array<string, mixed> $instance Widget-Instanz.
 	 */
 	public function widget( $args, $instance ): void {
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Veranstaltungen filtern', 'kulturhaus-events' );
-		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
+		$title        = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Veranstaltungen filtern', 'kulturhaus-events' );
+		$title        = apply_filters( 'widget_title', $title, $instance, $this->id_base );
+		$accent_color = ! empty( $instance['accent_color'] ) ? $instance['accent_color'] : '#ffc107';
+		$button_text  = ! empty( $instance['button_text'] ) ? $instance['button_text'] : __( 'Filtern', 'kulturhaus-events' );
 
 		echo $args['before_widget'];
+
+		// Custom Styling
+		$widget_id = $args['widget_id'];
+		?>
+		<style>
+			#<?php echo esc_attr( $widget_id ); ?> .kh-filter-widget__submit {
+				background: <?php echo esc_attr( $accent_color ); ?>;
+			}
+			#<?php echo esc_attr( $widget_id ); ?> .kh-filter-widget__submit:hover {
+				opacity: 0.8;
+			}
+		</style>
+		<?php
 
 		if ( $title ) {
 			echo $args['before_title'] . esc_html( $title ) . $args['after_title'];
@@ -124,7 +139,9 @@ class KH_Event_Filter_Widget extends WP_Widget {
 			<?php endif; ?>
 
 			<div class="kh-filter-actions">
-				<button type="submit" class="kh-filter-submit"><?php esc_html_e( 'Filtern', 'kulturhaus-events' ); ?></button>
+				<button type="submit" class="kh-filter-widget__submit">
+				<?php echo esc_html( $button_text ); ?>
+			</button>
 				<a href="<?php echo esc_url( $archive_url ); ?>" class="kh-filter-reset"><?php esc_html_e( 'Zurücksetzen', 'kulturhaus-events' ); ?></a>
 			</div>
 		</form>
@@ -138,7 +155,9 @@ class KH_Event_Filter_Widget extends WP_Widget {
 	 * @return string
 	 */
 	public function form( $instance ): string {
-		$title = isset( $instance['title'] ) ? $instance['title'] : __( 'Veranstaltungen filtern', 'kulturhaus-events' );
+		$title        = isset( $instance['title'] ) ? $instance['title'] : __( 'Veranstaltungen filtern', 'kulturhaus-events' );
+		$accent_color = isset( $instance['accent_color'] ) ? $instance['accent_color'] : '#ffc107';
+		$button_text  = isset( $instance['button_text'] ) ? $instance['button_text'] : __( 'Filtern', 'kulturhaus-events' );
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>">
@@ -150,6 +169,35 @@ class KH_Event_Filter_Widget extends WP_Widget {
 				name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" 
 				type="text" 
 				value="<?php echo esc_attr( $title ); ?>"
+			>
+		</p>
+
+		<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+		<p><strong><?php esc_html_e( 'Design-Einstellungen', 'kulturhaus-events' ); ?></strong></p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'accent_color' ) ); ?>">
+				<?php esc_html_e( 'Button-Farbe:', 'kulturhaus-events' ); ?>
+			</label>
+			<input 
+				class="widefat" 
+				id="<?php echo esc_attr( $this->get_field_id( 'accent_color' ) ); ?>" 
+				name="<?php echo esc_attr( $this->get_field_name( 'accent_color' ) ); ?>" 
+				type="color" 
+				value="<?php echo esc_attr( $accent_color ); ?>"
+			>
+		</p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'button_text' ) ); ?>">
+				<?php esc_html_e( 'Button-Text:', 'kulturhaus-events' ); ?>
+			</label>
+			<input 
+				class="widefat" 
+				id="<?php echo esc_attr( $this->get_field_id( 'button_text' ) ); ?>" 
+				name="<?php echo esc_attr( $this->get_field_name( 'button_text' ) ); ?>" 
+				type="text" 
+				value="<?php echo esc_attr( $button_text ); ?>"
 			>
 		</p>
 		<?php
@@ -164,8 +212,10 @@ class KH_Event_Filter_Widget extends WP_Widget {
 	 * @return array<string, mixed>
 	 */
 	public function update( $new_instance, $old_instance ): array {
-		$instance          = array();
-		$instance['title'] = ! empty( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '';
+		$instance                 = array();
+		$instance['title']        = ! empty( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '';
+		$instance['accent_color'] = ! empty( $new_instance['accent_color'] ) ? sanitize_hex_color( $new_instance['accent_color'] ) : '#ffc107';
+		$instance['button_text']  = ! empty( $new_instance['button_text'] ) ? sanitize_text_field( $new_instance['button_text'] ) : __( 'Filtern', 'kulturhaus-events' );
 
 		return $instance;
 	}

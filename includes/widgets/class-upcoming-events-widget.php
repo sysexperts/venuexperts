@@ -39,10 +39,14 @@ class KH_Upcoming_Events_Widget extends WP_Widget {
 	 * @param array<string, mixed> $instance Widget-Instanz.
 	 */
 	public function widget( $args, $instance ): void {
-		$title    = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Kommende Veranstaltungen', 'kulturhaus-events' );
-		$title    = apply_filters( 'widget_title', $title, $instance, $this->id_base );
-		$limit    = ! empty( $instance['limit'] ) ? absint( $instance['limit'] ) : 5;
-		$category = ! empty( $instance['category'] ) ? $instance['category'] : '';
+		$title         = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Kommende Veranstaltungen', 'kulturhaus-events' );
+		$title         = apply_filters( 'widget_title', $title, $instance, $this->id_base );
+		$limit         = ! empty( $instance['limit'] ) ? absint( $instance['limit'] ) : 5;
+		$category      = ! empty( $instance['category'] ) ? $instance['category'] : '';
+		$accent_color  = ! empty( $instance['accent_color'] ) ? $instance['accent_color'] : '#ffc107';
+		$text_color    = ! empty( $instance['text_color'] ) ? $instance['text_color'] : '#333333';
+		$more_text     = ! empty( $instance['more_text'] ) ? $instance['more_text'] : __( 'Alle Veranstaltungen ansehen', 'kulturhaus-events' );
+		$show_more     = isset( $instance['show_more'] ) ? (bool) $instance['show_more'] : true;
 
 		$query_args = array(
 			'post_type'      => KH_Event::POST_TYPE,
@@ -79,6 +83,33 @@ class KH_Upcoming_Events_Widget extends WP_Widget {
 
 		echo $args['before_widget'];
 
+		// Custom Styling
+		$widget_id = $args['widget_id'];
+		?>
+		<style>
+			#<?php echo esc_attr( $widget_id ); ?> .kh-widget-events {
+				--widget-accent-color: <?php echo esc_attr( $accent_color ); ?>;
+				--widget-text-color: <?php echo esc_attr( $text_color ); ?>;
+			}
+			#<?php echo esc_attr( $widget_id ); ?> .kh-widget-event a {
+				color: var(--widget-text-color);
+			}
+			#<?php echo esc_attr( $widget_id ); ?> .kh-widget-event a:hover {
+				color: var(--widget-accent-color);
+			}
+			#<?php echo esc_attr( $widget_id ); ?> .kh-widget-event__date {
+				background: var(--widget-accent-color);
+			}
+			#<?php echo esc_attr( $widget_id ); ?> .kh-widget-events__more a {
+				background: var(--widget-accent-color);
+				color: #000;
+			}
+			#<?php echo esc_attr( $widget_id ); ?> .kh-widget-events__more a:hover {
+				opacity: 0.8;
+			}
+		</style>
+		<?php
+
 		if ( $title ) {
 			echo $args['before_title'] . esc_html( $title ) . $args['after_title'];
 		}
@@ -110,13 +141,15 @@ class KH_Upcoming_Events_Widget extends WP_Widget {
 
 		echo '</ul>';
 
-		$archive_link = get_post_type_archive_link( KH_Event::POST_TYPE );
-		if ( $archive_link ) {
-			printf(
-				'<p class="kh-widget-events__more"><a href="%s">%s</a></p>',
-				esc_url( $archive_link ),
-				esc_html__( 'Alle Veranstaltungen ansehen', 'kulturhaus-events' )
-			);
+		if ( $show_more ) {
+			$archive_link = get_post_type_archive_link( KH_Event::POST_TYPE );
+			if ( $archive_link ) {
+				printf(
+					'<p class="kh-widget-events__more"><a href="%s">%s</a></p>',
+					esc_url( $archive_link ),
+					esc_html( $more_text )
+				);
+			}
 		}
 
 		wp_reset_postdata();
@@ -131,9 +164,13 @@ class KH_Upcoming_Events_Widget extends WP_Widget {
 	 * @return string
 	 */
 	public function form( $instance ): string {
-		$title    = isset( $instance['title'] ) ? $instance['title'] : __( 'Kommende Veranstaltungen', 'kulturhaus-events' );
-		$limit    = isset( $instance['limit'] ) ? absint( $instance['limit'] ) : 5;
-		$category = isset( $instance['category'] ) ? $instance['category'] : '';
+		$title        = isset( $instance['title'] ) ? $instance['title'] : __( 'Kommende Veranstaltungen', 'kulturhaus-events' );
+		$limit        = isset( $instance['limit'] ) ? absint( $instance['limit'] ) : 5;
+		$category     = isset( $instance['category'] ) ? $instance['category'] : '';
+		$accent_color = isset( $instance['accent_color'] ) ? $instance['accent_color'] : '#ffc107';
+		$text_color   = isset( $instance['text_color'] ) ? $instance['text_color'] : '#333333';
+		$more_text    = isset( $instance['more_text'] ) ? $instance['more_text'] : __( 'Alle Veranstaltungen ansehen', 'kulturhaus-events' );
+		$show_more    = isset( $instance['show_more'] ) ? (bool) $instance['show_more'] : true;
 
 		$categories = get_terms(
 			array(
@@ -189,6 +226,63 @@ class KH_Upcoming_Events_Widget extends WP_Widget {
 				</select>
 			</p>
 		<?php endif; ?>
+
+		<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+		<p><strong><?php esc_html_e( 'Design-Einstellungen', 'kulturhaus-events' ); ?></strong></p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'accent_color' ) ); ?>">
+				<?php esc_html_e( 'Akzentfarbe:', 'kulturhaus-events' ); ?>
+			</label>
+			<input 
+				class="widefat" 
+				id="<?php echo esc_attr( $this->get_field_id( 'accent_color' ) ); ?>" 
+				name="<?php echo esc_attr( $this->get_field_name( 'accent_color' ) ); ?>" 
+				type="color" 
+				value="<?php echo esc_attr( $accent_color ); ?>"
+			>
+			<small><?php esc_html_e( 'Farbe für Datum-Badge und Button', 'kulturhaus-events' ); ?></small>
+		</p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'text_color' ) ); ?>">
+				<?php esc_html_e( 'Textfarbe:', 'kulturhaus-events' ); ?>
+			</label>
+			<input 
+				class="widefat" 
+				id="<?php echo esc_attr( $this->get_field_id( 'text_color' ) ); ?>" 
+				name="<?php echo esc_attr( $this->get_field_name( 'text_color' ) ); ?>" 
+				type="color" 
+				value="<?php echo esc_attr( $text_color ); ?>"
+			>
+			<small><?php esc_html_e( 'Farbe für Event-Titel', 'kulturhaus-events' ); ?></small>
+		</p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'show_more' ) ); ?>">
+				<input 
+					type="checkbox" 
+					id="<?php echo esc_attr( $this->get_field_id( 'show_more' ) ); ?>" 
+					name="<?php echo esc_attr( $this->get_field_name( 'show_more' ) ); ?>" 
+					value="1"
+					<?php checked( $show_more, true ); ?>
+				>
+				<?php esc_html_e( '"Alle ansehen"-Link anzeigen', 'kulturhaus-events' ); ?>
+			</label>
+		</p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'more_text' ) ); ?>">
+				<?php esc_html_e( 'Link-Text:', 'kulturhaus-events' ); ?>
+			</label>
+			<input 
+				class="widefat" 
+				id="<?php echo esc_attr( $this->get_field_id( 'more_text' ) ); ?>" 
+				name="<?php echo esc_attr( $this->get_field_name( 'more_text' ) ); ?>" 
+				type="text" 
+				value="<?php echo esc_attr( $more_text ); ?>"
+			>
+		</p>
 		<?php
 		return '';
 	}
@@ -201,10 +295,14 @@ class KH_Upcoming_Events_Widget extends WP_Widget {
 	 * @return array<string, mixed>
 	 */
 	public function update( $new_instance, $old_instance ): array {
-		$instance             = array();
-		$instance['title']    = ! empty( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '';
-		$instance['limit']    = ! empty( $new_instance['limit'] ) ? absint( $new_instance['limit'] ) : 5;
-		$instance['category'] = ! empty( $new_instance['category'] ) ? sanitize_text_field( $new_instance['category'] ) : '';
+		$instance                 = array();
+		$instance['title']        = ! empty( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '';
+		$instance['limit']        = ! empty( $new_instance['limit'] ) ? absint( $new_instance['limit'] ) : 5;
+		$instance['category']     = ! empty( $new_instance['category'] ) ? sanitize_text_field( $new_instance['category'] ) : '';
+		$instance['accent_color'] = ! empty( $new_instance['accent_color'] ) ? sanitize_hex_color( $new_instance['accent_color'] ) : '#ffc107';
+		$instance['text_color']   = ! empty( $new_instance['text_color'] ) ? sanitize_hex_color( $new_instance['text_color'] ) : '#333333';
+		$instance['more_text']    = ! empty( $new_instance['more_text'] ) ? sanitize_text_field( $new_instance['more_text'] ) : __( 'Alle Veranstaltungen ansehen', 'kulturhaus-events' );
+		$instance['show_more']    = ! empty( $new_instance['show_more'] ) ? 1 : 0;
 
 		return $instance;
 	}
