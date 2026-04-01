@@ -284,6 +284,20 @@
 	color: #fff;
 }
 
+/* Tickets Button */
+.kh-btn-tickets {
+	background: #dc143c;
+	color: #fff;
+	border: none;
+}
+
+.kh-btn-tickets:hover {
+	background: #b91c1c;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+	color: #fff;
+}
+
 /* Calendar Button */
 .kh-btn-calendar {
 	background: #fff;

@@ -113,15 +113,6 @@ if ( $venue_id ) {
 					</div>
 				<?php endif; ?>
 
-				<?php if ( $organizer_id ) : 
-					$organizer = get_post( (int) $organizer_id );
-					if ( $organizer ) :
-				?>
-					<div class="kh-event-organizer">
-						<p><strong>Veranstalter:</strong> <?php echo esc_html( $organizer->post_title ); ?></p>
-					</div>
-				<?php endif; endif; ?>
-
 			</div>
 
 			<!-- Sidebar -->
