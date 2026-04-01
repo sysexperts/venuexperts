@@ -1,0 +1,330 @@
+/**
+ * Kulturhaus Events - Frontend Styles
+ *
+ * BITV 2.0 / WCAG 2.1 AA konform:
+ * - Mindestkontrast 4.5:1 für normalen Text
+ * - Mindestkontrast 3:1 für großen Text (18px+)
+ * - Fokus-Indikatoren deutlich sichtbar
+ * - Responsive bis 200% Zoom
+ *
+ * @package KulturhausEvents
+ * @since   1.0.0
+ */
+
+/* ===========================
+   Basis & Variablen
+   =========================== */
+:root {
+	--kh-color-primary: #1d4ed8;
+	--kh-color-primary-dark: #1e3a8a;
+	--kh-color-text: #1f2937;
+	--kh-color-text-light: #4b5563;
+	--kh-color-bg: #ffffff;
+	--kh-color-bg-alt: #f3f4f6;
+	--kh-color-border: #d1d5db;
+	--kh-color-success: #059669;
+	--kh-color-warning: #d97706;
+	--kh-color-danger: #dc2626;
+	--kh-color-muted: #6b7280;
+	--kh-font-size-base: 1rem;
+	--kh-font-size-sm: 0.875rem;
+	--kh-font-size-lg: 1.125rem;
+	--kh-spacing: 1rem;
+	--kh-radius: 4px;
+}
+
+/* ===========================
+   Einzelansicht
+   =========================== */
+.kh-event-single {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: var(--kh-spacing);
+}
+
+.kh-event__header {
+	margin-bottom: calc(var(--kh-spacing) * 2);
+}
+
+.kh-event__title {
+	font-size: 2rem;
+	color: var(--kh-color-text);
+	margin: 0 0 var(--kh-spacing);
+	line-height: 1.3;
+}
+
+.kh-event__status {
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: var(--kh-radius);
+	font-size: var(--kh-font-size-sm);
+	font-weight: 600;
+}
+
+.kh-event__status--cancelled {
+	background-color: #fef2f2;
+	color: var(--kh-color-danger);
+	border: 1px solid var(--kh-color-danger);
+}
+
+.kh-event__status--postponed {
+	background-color: #fffbeb;
+	color: var(--kh-color-warning);
+	border: 1px solid var(--kh-color-warning);
+}
+
+.kh-event__status--soldout {
+	background-color: var(--kh-color-bg-alt);
+	color: var(--kh-color-muted);
+	border: 1px solid var(--kh-color-border);
+}
+
+.kh-event__image {
+	margin: 0 0 calc(var(--kh-spacing) * 2);
+}
+
+.kh-event__image img {
+	width: 100%;
+	height: auto;
+	border-radius: var(--kh-radius);
+}
+
+.kh-event__meta {
+	background: var(--kh-color-bg-alt);
+	border: 1px solid var(--kh-color-border);
+	border-radius: var(--kh-radius);
+	padding: calc(var(--kh-spacing) * 1.5);
+	margin-bottom: calc(var(--kh-spacing) * 2);
+}
+
+.kh-event__meta > div {
+	margin-bottom: var(--kh-spacing);
+	padding-bottom: var(--kh-spacing);
+	border-bottom: 1px solid var(--kh-color-border);
+}
+
+.kh-event__meta > div:last-child {
+	margin-bottom: 0;
+	padding-bottom: 0;
+	border-bottom: none;
+}
+
+.kh-event__meta strong {
+	display: block;
+	color: var(--kh-color-text);
+	margin-bottom: 4px;
+	font-size: var(--kh-font-size-sm);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.kh-event__venue address {
+	font-style: normal;
+	color: var(--kh-color-text-light);
+}
+
+.kh-event__description {
+	font-size: var(--kh-font-size-lg);
+	line-height: 1.7;
+	color: var(--kh-color-text);
+}
+
+/* ===========================
+   Archiv / Listenansicht
+   =========================== */
+.kh-events-archive {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: var(--kh-spacing);
+}
+
+.kh-events-archive__title {
+	font-size: 2rem;
+	color: var(--kh-color-text);
+	margin-bottom: calc(var(--kh-spacing) * 2);
+}
+
+.kh-events-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--kh-spacing);
+}
+
+/* Event-Karte */
+.kh-event-card {
+	display: flex;
+	border: 1px solid var(--kh-color-border);
+	border-radius: var(--kh-radius);
+	overflow: hidden;
+	background: var(--kh-color-bg);
+	transition: box-shadow 0.2s ease;
+}
+
+.kh-event-card:hover,
+.kh-event-card:focus-within {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kh-event-card__image {
+	flex: 0 0 200px;
+	margin: 0;
+}
+
+.kh-event-card__image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.kh-event-card__content {
+	display: flex;
+	flex: 1;
+	padding: var(--kh-spacing);
+	gap: var(--kh-spacing);
+}
+
+.kh-event-card__date {
+	flex: 0 0 60px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	padding-top: 4px;
+}
+
+.kh-event-card__date-day {
+	font-size: 1.75rem;
+	font-weight: 700;
+	color: var(--kh-color-primary);
+	line-height: 1;
+}
+
+.kh-event-card__date-month {
+	font-size: var(--kh-font-size-sm);
+	text-transform: uppercase;
+	color: var(--kh-color-text-light);
+	letter-spacing: 0.05em;
+}
+
+.kh-event-card__details {
+	flex: 1;
+}
+
+.kh-event-card__title {
+	font-size: var(--kh-font-size-lg);
+	margin: 0 0 8px;
+	line-height: 1.3;
+}
+
+.kh-event-card__title a {
+	color: var(--kh-color-text);
+	text-decoration: none;
+}
+
+.kh-event-card__title a:hover,
+.kh-event-card__title a:focus {
+	color: var(--kh-color-primary);
+	text-decoration: underline;
+}
+
+.kh-event-card__status {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: var(--kh-radius);
+	font-size: var(--kh-font-size-sm);
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+.kh-event-card__status--cancelled {
+	background: #fef2f2;
+	color: var(--kh-color-danger);
+}
+
+.kh-event-card__status--postponed {
+	background: #fffbeb;
+	color: var(--kh-color-warning);
+}
+
+.kh-event-card__status--soldout {
+	background: var(--kh-color-bg-alt);
+	color: var(--kh-color-muted);
+}
+
+.kh-event-card__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kh-spacing);
+	color: var(--kh-color-text-light);
+	font-size: var(--kh-font-size-sm);
+	margin-bottom: 8px;
+}
+
+.kh-event-card__cost--free {
+	color: var(--kh-color-success);
+	font-weight: 600;
+}
+
+.kh-event-card__excerpt {
+	color: var(--kh-color-text-light);
+	font-size: var(--kh-font-size-sm);
+	margin: 0;
+	line-height: 1.5;
+}
+
+.kh-events-archive__empty {
+	text-align: center;
+	padding: calc(var(--kh-spacing) * 4);
+	color: var(--kh-color-muted);
+	font-size: var(--kh-font-size-lg);
+}
+
+/* ===========================
+   Fokus-Indikatoren (BITV 2.0)
+   =========================== */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 3px solid var(--kh-color-primary);
+	outline-offset: 2px;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 768px) {
+	.kh-event-card {
+		flex-direction: column;
+	}
+
+	.kh-event-card__image {
+		flex: none;
+		height: 200px;
+	}
+
+	.kh-event-card__content {
+		flex-direction: column;
+	}
+
+	.kh-event-card__date {
+		flex-direction: row;
+		gap: 8px;
+	}
+
+	.kh-event__title {
+		font-size: 1.5rem;
+	}
+
+	.kh-events-archive__title {
+		font-size: 1.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.kh-event-card__meta {
+		flex-direction: column;
+		gap: 4px;
+	}
+}

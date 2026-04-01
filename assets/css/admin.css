@@ -1,0 +1,47 @@
+/**
+ * Kulturhaus Events - Admin Styles
+ *
+ * @package KulturhausEvents
+ * @since   1.0.0
+ */
+
+/* Meta-Box Tabelle */
+.kh-meta-table th {
+	width: 180px;
+	padding: 12px 10px;
+	vertical-align: top;
+}
+
+.kh-meta-table td {
+	padding: 8px 10px;
+}
+
+.kh-meta-table input[type="datetime-local"],
+.kh-meta-table input[type="text"],
+.kh-meta-table input[type="url"],
+.kh-meta-table input[type="email"],
+.kh-meta-table input[type="tel"] {
+	width: 100%;
+	max-width: 400px;
+}
+
+.kh-meta-table textarea {
+	width: 100%;
+}
+
+.kh-meta-table select {
+	min-width: 200px;
+}
+
+/* Admin-Spalten */
+.column-kh_event_date {
+	width: 160px;
+}
+
+.column-kh_event_venue {
+	width: 160px;
+}
+
+.column-kh_event_status {
+	width: 100px;
+}
