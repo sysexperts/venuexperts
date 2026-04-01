@@ -129,4 +129,14 @@ class KH_Organizer_Meta {
 			}
 		}
 	}
+
+	/**
+	 * Meta-Daten speichern (Alias für save).
+	 *
+	 * @param int      $post_id Die Post-ID.
+	 * @param \WP_Post $post    Das Post-Objekt.
+	 */
+	public function save_meta( int $post_id, \WP_Post $post ): void {
+		$this->save( $post_id, $post );
+	}
 }
