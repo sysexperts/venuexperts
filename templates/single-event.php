@@ -34,7 +34,7 @@ $venue_city = '';
 $venue_address = '';
 if ( $venue_id ) {
 	$venue = get_post( (int) $venue_id );
-	if ( $venue && $venue->post_status === 'publish' ) {
+	if ( $venue ) {
 		$venue_name = $venue->post_title;
 		$venue_city = get_post_meta( $venue->ID, '_kh_venue_city', true );
 		$venue_address = get_post_meta( $venue->ID, '_kh_venue_address', true );
@@ -46,7 +46,7 @@ $organizer = null;
 $organizer_name = '';
 if ( $organizer_id ) {
 	$organizer = get_post( (int) $organizer_id );
-	if ( $organizer && $organizer->post_status === 'publish' ) {
+	if ( $organizer ) {
 		$organizer_name = $organizer->post_title;
 	}
 }
@@ -211,10 +211,7 @@ if ( $organizer_id ) {
 					<?php endif; ?>
 
 					<!-- Veranstalter -->
-					<?php if ( $organizer_id ) : 
-						$organizer = get_post( (int) $organizer_id );
-						if ( $organizer ) :
-					?>
+					<?php if ( $organizer_name ) : ?>
 						<div class="kh-info-item">
 							<div class="kh-info-icon">
 								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -225,10 +222,10 @@ if ( $organizer_id ) {
 								</svg>
 							</div>
 							<div class="kh-info-text">
-								<?php echo esc_html( $organizer->post_title ); ?>
+								<?php echo esc_html( $organizer_name ); ?>
 							</div>
 						</div>
-					<?php endif; endif; ?>
+					<?php endif; ?>
 
 				</div>
 
