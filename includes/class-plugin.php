@@ -37,6 +37,7 @@ class KH_Plugin {
 		$this->register_calendar();
 		$this->register_widgets();
 		$this->register_ical_export();
+		$this->register_import_export();
 		$this->register_query_filters();
 	}
 
@@ -291,8 +292,16 @@ class KH_Plugin {
 	 * iCal-Export registrieren.
 	 */
 	private function register_ical_export(): void {
-		$ical = new KH_ICal_Export();
-		$ical->register();
+		$ical_export = new KH_ICal_Export();
+		$ical_export->register();
+	}
+
+	/**
+	 * Import/Export registrieren.
+	 */
+	private function register_import_export(): void {
+		$import_export = new KH_Import_Export();
+		$import_export->register();
 	}
 
 	/**

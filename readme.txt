@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.13.1
+Stable tag: 1.14.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,20 @@ Beispiel: `[kh_upcoming_events limit="3"]`
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.14.1 =
+* **BUGFIX:** PHP Deprecated Warning bei fgetcsv() behoben
+* Escape-Parameter für fgetcsv() hinzugefügt (PHP 8.4+ Kompatibilität)
+
+= 1.14.0 =
+* **NEUES FEATURE:** Event Import & Export via CSV
+* Admin-Seite: Veranstaltungen → Import/Export
+* CSV-Export aller Events (mit/ohne vergangene)
+* CSV-Import mit Update-Option für existierende Events
+* Beispiel-CSV mit 12 Test-Events zum Download
+* Unterstützt alle Event-Felder: Datum, Ort, Preise, Status, Kategorien, Tags, Featured Image
+* Featured Images werden automatisch von URL importiert
+* UTF-8 Unterstützung mit BOM
 
 = 1.13.1 =
 * **DESIGN-ÄNDERUNG:** Highlights Standard-Farbe von Gelb auf Rot geändert
