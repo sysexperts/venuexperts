@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.14.1
+Stable tag: 1.14.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,12 @@ Beispiel: `[kh_upcoming_events limit="3"]`
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.14.2 =
+* **BUGFIX:** Button-Größen vereinheitlicht
+* Tickets kaufen und Kalender-Buttons haben jetzt einheitliche Größe
+* Padding: 10px 20px (statt 12px 24px)
+* Font-Size: 14px (statt 16px)
 
 = 1.14.1 =
 * **BUGFIX:** PHP Deprecated Warning bei fgetcsv() behoben
