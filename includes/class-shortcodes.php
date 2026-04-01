@@ -223,13 +223,14 @@ class KH_Shortcodes {
 	public function event_highlights( $atts ): string {
 		$atts = shortcode_atts(
 			array(
-				'limit'       => 3,
-				'category'    => '',
-				'title'       => 'HIGH-LIGHTS',
-				'subtitle'    => 'DAS KULTURHAUS OSTERFELD',
-				'text'        => 'Das „Osterfeld" ist mit jährlich bis zu 150.000 Besuchern und Nutzern das größte Kultur- und Kommunikationszentrum in der Region Pforzheim. Hier findet die freie Kunst-, Kultur- und Theaterszene ihren Spielraum. Auf dem Programm stehen u.a. künstlerische und kulturelle Projekte, Comedy, Kabarett sowie Theaterproduktionen.',
-				'button_text' => 'UNSER AKTUELLES PROGRAMM',
-				'button_link' => '/veranstaltungen/',
+				'limit'        => 3,
+				'category'     => '',
+				'title'        => 'HIGH-LIGHTS',
+				'subtitle'     => 'DAS KULTURHAUS OSTERFELD',
+				'text'         => 'Das „Osterfeld" ist mit jährlich bis zu 150.000 Besuchern und Nutzern das größte Kultur- und Kommunikationszentrum in der Region Pforzheim. Hier findet die freie Kunst-, Kultur- und Theaterszene ihren Spielraum. Auf dem Programm stehen u.a. künstlerische und kulturelle Projekte, Comedy, Kabarett sowie Theaterproduktionen.',
+				'button_text'  => 'UNSER AKTUELLES PROGRAMM',
+				'button_link'  => '/veranstaltungen/',
+				'accent_color' => '#dc143c',
 			),
 			$atts,
 			'kh_event_highlights'

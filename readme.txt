@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.13.0
+Stable tag: 1.13.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,13 @@ Beispiel: `[kh_upcoming_events limit="3"]`
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.13.1 =
+* **DESIGN-ÄNDERUNG:** Highlights Standard-Farbe von Gelb auf Rot geändert
+* Gelber Highlight-Balken unter Titel entfernt (kein Durchstrich mehr)
+* Button-Farbe: Rot (#dc143c) mit weißem Text
+* Dekorative Linien: Rot statt Gelb
+* Event-Karten Akzent: Rot statt Gelb
 
 = 1.13.0 =
 * **NEUES FEATURE:** Widget-Anpassungen für Farben und Texte
@@ -280,4 +287,12 @@ Beispiel: `[kh_upcoming_events limit="3"]`
 * Erstveröffentlichung
 * Custom Post Types: Events, Venues, Organizer
 * Taxonomien: Kategorien, Schlagwörter
-* Meta-Boxen für Ver
+* Meta-Boxen für Veranstaltungsdetails
+* Einzelansicht und Archivansicht
+* Admin-Spalten mit Sortierung
+* BITV 2.0 / WCAG 2.1 AA konformes Frontend
+* Shortcodes: [kh_events] und [kh_upcoming_events]
+* iCal/ICS-Export für einzelne Veranstaltungen
+* Filter-Widget für Datum und Kategorien
+* Kommende Events Widget für Sidebar
+* Query-Filter für Event-Archive
