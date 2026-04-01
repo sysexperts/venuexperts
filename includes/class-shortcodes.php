@@ -499,40 +499,66 @@ class KH_Shortcodes {
 	public function event_program( $atts ): string {
 		$atts = shortcode_atts(
 			array(
-				'month'           => (int) current_time( 'n' ),
-				'year'            => (int) current_time( 'Y' ),
+				'month'           => '',
+				'year'            => '',
 				'category'        => '',
-				'show_navigation' => 'true',
+				'show_navigation' => 'false',
+				'limit'           => 50,
 			),
 			$atts,
 			'kh_event_program'
 		);
 
-		$month = absint( $atts['month'] );
-		$year  = absint( $atts['year'] );
 		$show_nav = $atts['show_navigation'] === 'true';
+		$limit = absint( $atts['limit'] );
 
-		// Monatsgrenzen berechnen
-		$start_date = sprintf( '%04d-%02d-01 00:00:00', $year, $month );
-		$end_date   = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
-
-		// Query-Args
-		$args = array(
-			'post_type'      => KH_Event::POST_TYPE,
-			'posts_per_page' => -1,
-			'post_status'    => 'publish',
-			'orderby'        => 'meta_value',
-			'order'          => 'ASC',
-			'meta_key'       => '_kh_event_start_date',
-			'meta_query'     => array(
-				array(
-					'key'     => '_kh_event_start_date',
-					'value'   => array( $start_date, $end_date ),
-					'compare' => 'BETWEEN',
-					'type'    => 'DATETIME',
+		// Wenn Monat/Jahr angegeben: Monatliche Ansicht
+		if ( ! empty( $atts['month'] ) && ! empty( $atts['year'] ) ) {
+			$month = absint( $atts['month'] );
+			$year  = absint( $atts['year'] );
+			
+			$start_date = sprintf( '%04d-%02d-01 00:00:00', $year, $month );
+			$end_date   = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
+			$month_title = strtoupper( wp_date( 'F', strtotime( $start_date ) ) );
+			
+			$args = array(
+				'post_type'      => KH_Event::POST_TYPE,
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+				'orderby'        => 'meta_value',
+				'order'          => 'ASC',
+				'meta_key'       => '_kh_event_start_date',
+				'meta_query'     => array(
+					array(
+						'key'     => '_kh_event_start_date',
+						'value'   => array( $start_date, $end_date ),
+						'compare' => 'BETWEEN',
+						'type'    => 'DATETIME',
+					),
 				),
-			),
-		);
+			);
+		} else {
+			// Standard: Kommende Events ab jetzt
+			$start_date = current_time( 'mysql' );
+			$month_title = '';
+			
+			$args = array(
+				'post_type'      => KH_Event::POST_TYPE,
+				'posts_per_page' => $limit,
+				'post_status'    => 'publish',
+				'orderby'        => 'meta_value',
+				'order'          => 'ASC',
+				'meta_key'       => '_kh_event_start_date',
+				'meta_query'     => array(
+					array(
+						'key'     => '_kh_event_start_date',
+						'value'   => $start_date,
+						'compare' => '>=',
+						'type'    => 'DATETIME',
+					),
+				),
+			);
+		}
 
 		// Kategorie-Filter
 		if ( ! empty( $atts['category'] ) ) {
@@ -561,9 +587,11 @@ class KH_Shortcodes {
 				</div>
 			<?php endif; ?>
 
-			<h2 class="kh-program-month-title">
-				<?php echo esc_html( strtoupper( wp_date( 'F', strtotime( $start_date ) ) ) ); ?>
-			</h2>
+			<?php if ( ! empty( $month_title ) ) : ?>
+				<h2 class="kh-program-month-title">
+					<?php echo esc_html( $month_title ); ?>
+				</h2>
+			<?php endif; ?>
 
 			<?php if ( $query->have_posts() ) : ?>
 				<div class="kh-program-list">

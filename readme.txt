@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.15.1
+Stable tag: 1.15.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,14 +69,19 @@ Parameter:
 Beispiel: `[kh_upcoming_events limit="3"]`
 
 **[kh_event_program]**
-Zeigt monatliche Programm-Liste im Kulturhaus-Design
+Zeigt Event-Programm-Liste im Kulturhaus-Design
 
 Parameter:
-* month - Monat (1-12)
-* year - Jahr
-* show_navigation - true/false (Standard: true)
+* limit - Anzahl Events (Standard: 50, nur ohne month/year)
+* month - Monat (1-12, optional für monatliche Ansicht)
+* year - Jahr (optional für monatliche Ansicht)
+* category - Kategorie-Slug
+* show_navigation - true/false (Standard: false)
 
-Beispiel: `[kh_event_program month="4" year="2026" show_navigation="true"]`
+Beispiele:
+`[kh_event_program]` - Zeigt die nächsten 50 Events
+`[kh_event_program limit="20"]` - Zeigt die nächsten 20 Events
+`[kh_event_program month="4" year="2026"]` - Zeigt nur Events im April 2026
 
 == Widgets ==
 
@@ -84,6 +89,21 @@ Beispiel: `[kh_event_program month="4" year="2026" show_navigation="true"]`
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.15.2 =
+* **ÄNDERUNG:** [kh_event_program] zeigt jetzt standardmäßig kommende Events
+* Nicht mehr auf aktuellen Monat beschränkt
+* Neuer Parameter: limit (Standard: 50)
+* month/year jetzt optional für monatliche Ansicht
+* show_navigation standardmäßig false
+
+= 1.15.1 =
+* **BUGFIX:** event_program() Methode fehlte in class-shortcodes.php
+* Shortcode [kh_event_program] funktioniert jetzt
+
+= 1.15.0 =
+* **DESIGN:** Dekorative rote Linien im Highlight-Widget entfernt
+* Saubereres, minimalistischeres Design
 
 = 1.14.5 =
 * **DESIGN:** Dekorative rote Linien im Highlight-Widget entfernt
