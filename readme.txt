@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.15.2
+Stable tag: 1.15.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,15 @@ Beispiele:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.15.3 =
+* **DESIGN:** Event Programm im Highlights-Stil überarbeitet
+* Roter Akzent-Streifen oben auf jeder Event-Karte
+* Größere Bilder (180x180px) mit Rotation beim Hover
+* Schönere Schatten und Animationen
+* Roter Button statt gelber Text
+* Titel wird rot beim Hover
+* Bessere Typografie und Abstände
 
 = 1.15.2 =
 * **ÄNDERUNG:** [kh_event_program] zeigt jetzt standardmäßig kommende Events
