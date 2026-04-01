@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.15.4
+Stable tag: 1.16.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,19 +69,21 @@ Parameter:
 Beispiel: `[kh_upcoming_events limit="3"]`
 
 **[kh_event_program]**
-Zeigt Event-Programm-Liste im Kulturhaus-Design
+Zeigt Event-Programm im 2-Spalten Layout (60% Events, 40% News)
 
 Parameter:
-* limit - Anzahl Events (Standard: 50, nur ohne month/year)
+* limit - Anzahl Events (Standard: 20)
 * month - Monat (1-12, optional für monatliche Ansicht)
 * year - Jahr (optional für monatliche Ansicht)
 * category - Kategorie-Slug
 * show_navigation - true/false (Standard: false)
+* show_all_link - true/false (Standard: true)
+* all_link_url - URL für "Alle Veranstaltungen" Link (Standard: /veranstaltungen/)
 
 Beispiele:
-`[kh_event_program]` - Zeigt die nächsten 50 Events
-`[kh_event_program limit="20"]` - Zeigt die nächsten 20 Events
-`[kh_event_program month="4" year="2026"]` - Zeigt nur Events im April 2026
+`[kh_event_program]` - Zeigt die nächsten 20 Events mit News-Bereich
+`[kh_event_program limit="10"]` - Zeigt die nächsten 10 Events
+`[kh_event_program show_all_link="false"]` - Ohne "Alle Veranstaltungen" Link
 
 == Widgets ==
 
@@ -89,6 +91,15 @@ Beispiele:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.16.0 =
+* **FEATURE:** 2-Spalten Layout für Event Programm
+* Links: Events (60% Breite)
+* Rechts: News-Bereich (40% Breite, sticky)
+* "Alle Veranstaltungen" Link unter Events
+* Standard-Limit auf 20 Events reduziert
+* Neue Parameter: show_all_link, all_link_url
+* Responsive: 1-Spalte auf Tablets/Mobile
 
 = 1.15.4 =
 * **BUGFIX:** program.css wird jetzt auf allen Seiten geladen

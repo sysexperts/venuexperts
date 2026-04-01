@@ -7,12 +7,32 @@
  */
 
 /* ===========================
-   Programm Container
+   Event Programm Container
    =========================== */
 .kh-event-program {
-	max-width: 750px;
+	max-width: 1400px;
 	margin: 0 auto;
 	padding: 40px 20px;
+}
+
+/* 2-Spalten Layout */
+.kh-program-container {
+	display: grid;
+	grid-template-columns: 60% 40%;
+	gap: 40px;
+	align-items: start;
+}
+
+/* Events Spalte Links */
+.kh-program-events {
+	width: 100%;
+}
+
+/* News Spalte Rechts */
+.kh-program-news {
+	width: 100%;
+	position: sticky;
+	top: 20px;
 }
 
 /* Monats-Navigation */
@@ -240,6 +260,66 @@
 	padding: 60px 20px;
 	color: #666;
 	font-size: 16px;
+}
+
+/* Alle Veranstaltungen Link */
+.kh-program-all-link {
+	margin-top: 40px;
+	text-align: center;
+	padding-top: 30px;
+	border-top: 2px solid #e0e0e0;
+}
+
+.kh-program-all-link__button {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	padding: 14px 32px;
+	background: #dc143c;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	text-decoration: none;
+	border-radius: 4px;
+	box-shadow: 0 4px 16px rgba(220, 20, 60, 0.3);
+	transition: all 0.3s ease;
+}
+
+.kh-program-all-link__button:hover {
+	background: #b91c1c;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 24px rgba(220, 20, 60, 0.5);
+	gap: 16px;
+}
+
+/* News Bereich */
+.kh-program-news__title {
+	font-size: 28px;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: #000;
+	margin: 0 0 24px 0;
+	letter-spacing: 0.5px;
+	padding-bottom: 16px;
+	border-bottom: 4px solid #dc143c;
+}
+
+.kh-program-news__content {
+	background: #fff;
+	border-radius: 16px;
+	padding: 28px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.kh-program-news__placeholder {
+	color: #999;
+	font-size: 15px;
+	line-height: 1.7;
+	margin: 0;
+	text-align: center;
+	font-style: italic;
 }
 
 /* ===========================

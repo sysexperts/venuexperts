@@ -503,7 +503,9 @@ class KH_Shortcodes {
 				'year'            => '',
 				'category'        => '',
 				'show_navigation' => 'false',
-				'limit'           => 50,
+				'limit'           => 20,
+				'show_all_link'   => 'true',
+				'all_link_url'    => '/veranstaltungen/',
 			),
 			$atts,
 			'kh_event_program'
@@ -573,38 +575,64 @@ class KH_Shortcodes {
 
 		$query = new WP_Query( $args );
 
+		$show_all_link = $atts['show_all_link'] === 'true';
+		$all_link_url = esc_url( $atts['all_link_url'] );
+
 		ob_start();
 		?>
 		<div class="kh-event-program">
-			
-			<?php if ( $show_nav ) : ?>
-				<div class="kh-program-month-nav">
-					<button class="kh-program-month-nav__button" onclick="khNavigateMonth(-1)">‹</button>
-					<div class="kh-program-month-nav__current">
-						<?php echo esc_html( wp_date( 'F Y', strtotime( $start_date ) ) ); ?>
+			<div class="kh-program-container">
+				
+				<!-- Events Links (60%) -->
+				<div class="kh-program-events">
+					<?php if ( $show_nav ) : ?>
+						<div class="kh-program-month-nav">
+							<button class="kh-program-month-nav__button" onclick="khNavigateMonth(-1)">‹</button>
+							<div class="kh-program-month-nav__current">
+								<?php echo esc_html( wp_date( 'F Y', strtotime( $start_date ) ) ); ?>
+							</div>
+							<button class="kh-program-month-nav__button" onclick="khNavigateMonth(1)">›</button>
+						</div>
+					<?php endif; ?>
+
+					<?php if ( ! empty( $month_title ) ) : ?>
+						<h2 class="kh-program-month-title">
+							<?php echo esc_html( $month_title ); ?>
+						</h2>
+					<?php endif; ?>
+
+					<?php if ( $query->have_posts() ) : ?>
+						<div class="kh-program-list">
+							<?php while ( $query->have_posts() ) : $query->the_post(); ?>
+								<?php $this->render_program_item( get_the_ID() ); ?>
+							<?php endwhile; ?>
+						</div>
+
+						<?php if ( $show_all_link ) : ?>
+							<div class="kh-program-all-link">
+								<a href="<?php echo esc_url( $all_link_url ); ?>" class="kh-program-all-link__button">
+									<?php esc_html_e( 'Alle Veranstaltungen', 'kulturhaus-events' ); ?> →
+								</a>
+							</div>
+						<?php endif; ?>
+					<?php else : ?>
+						<div class="kh-program-empty">
+							<p><?php esc_html_e( 'Keine Veranstaltungen gefunden.', 'kulturhaus-events' ); ?></p>
+						</div>
+					<?php endif; ?>
+				</div>
+
+				<!-- News Rechts (40%) -->
+				<div class="kh-program-news">
+					<h2 class="kh-program-news__title"><?php esc_html_e( 'News', 'kulturhaus-events' ); ?></h2>
+					<div class="kh-program-news__content">
+						<p class="kh-program-news__placeholder">
+							<?php esc_html_e( 'Hier können Sie News veröffentlichen.', 'kulturhaus-events' ); ?>
+						</p>
 					</div>
-					<button class="kh-program-month-nav__button" onclick="khNavigateMonth(1)">›</button>
 				</div>
-			<?php endif; ?>
 
-			<?php if ( ! empty( $month_title ) ) : ?>
-				<h2 class="kh-program-month-title">
-					<?php echo esc_html( $month_title ); ?>
-				</h2>
-			<?php endif; ?>
-
-			<?php if ( $query->have_posts() ) : ?>
-				<div class="kh-program-list">
-					<?php while ( $query->have_posts() ) : $query->the_post(); ?>
-						<?php $this->render_program_item( get_the_ID() ); ?>
-					<?php endwhile; ?>
-				</div>
-			<?php else : ?>
-				<div class="kh-program-empty">
-					<p><?php esc_html_e( 'Keine Veranstaltungen in diesem Monat.', 'kulturhaus-events' ); ?></p>
-				</div>
-			<?php endif; ?>
-
+			</div>
 		</div>
 		<?php
 		wp_reset_postdata();
