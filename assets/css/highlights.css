@@ -17,7 +17,8 @@
 	overflow: hidden;
 }
 
-/* Dekorative rote Linien */
+/* Dekorative rote Linien - entfernt auf User-Wunsch */
+/*
 .kh-event-highlights::before,
 .kh-event-highlights::after {
 	content: '';
@@ -38,6 +39,7 @@
 	right: -50px;
 	transform: rotate(25deg);
 }
+*/
 
 /* Container: 2-Spalten-Layout */
 .kh-highlights-container {
