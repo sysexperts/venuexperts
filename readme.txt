@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.18.3
+Stable tag: 1.19.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,12 +85,40 @@ Beispiele:
 `[kh_event_program limit="10"]` - Zeigt die nächsten 10 Events
 `[kh_event_program show_all_link="false"]` - Ohne "Alle Veranstaltungen" Link
 
+**[kh_event_calendar]**
+Zeigt einen Monatskalender mit Events an
+
+Parameter:
+* month - Monat (1-12, optional, Standard: aktueller Monat)
+* year - Jahr (optional, Standard: aktuelles Jahr)
+* category - Kategorie-Slug
+
+Beispiele:
+`[kh_event_calendar]` - Zeigt aktuellen Monat
+`[kh_event_calendar month="12" year="2024"]` - Zeigt Dezember 2024
+`[kh_event_calendar category="konzerte"]` - Nur Konzerte
+
+Navigation: Über Pfeile zwischen Monaten wechseln
+Events: Klickbare Event-Badges in jedem Tag
+Heute: Rot markiert
+
 == Widgets ==
 
 * **Kommende Veranstaltungen** - Zeigt eine Liste kommender Events in der Sidebar
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.19.0 =
+* **NEU:** Event-Kalender Ansicht mit Shortcode `[kh_event_calendar]`
+* Monatskalender mit Navigation (Pfeile für vor/zurück)
+* Events als rote Badges in Kalendertagen
+* Heutiger Tag rot markiert
+* Klickbare Events führen zur Detailseite
+* Responsive Design (Desktop, Tablet, Mobile)
+* Rote Akzentfarbe (#dc143c) statt gelb
+* Filter nach Kategorie möglich
+* Neue CSS-Datei: calendar.css
 
 = 1.18.3 =
 * **ÄNDERUNG:** Sidebar scrollt jetzt mit (nicht mehr sticky)

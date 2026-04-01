@@ -27,6 +27,7 @@ class KH_Shortcodes {
 		add_shortcode( 'kh_upcoming_events', array( $this, 'upcoming_events' ) );
 		add_shortcode( 'kh_event_highlights', array( $this, 'event_highlights' ) );
 		add_shortcode( 'kh_event_program', array( $this, 'event_program' ) );
+		add_shortcode( 'kh_event_calendar', array( $this, 'event_calendar' ) );
 	}
 
 	/**
@@ -745,5 +746,205 @@ class KH_Shortcodes {
 			</div>
 		</a>
 		<?php
+	}
+
+	/**
+	 * Shortcode: [kh_event_calendar]
+	 *
+	 * Zeigt einen Monatskalender mit Events an.
+	 *
+	 * Attribute:
+	 * - month: Monat (1-12, Standard: aktueller Monat)
+	 * - year: Jahr (Standard: aktuelles Jahr)
+	 * - category: Kategorie-Slug
+	 *
+	 * @param array<string, mixed> $atts Shortcode-Attribute.
+	 * @return string HTML-Ausgabe.
+	 */
+	public function event_calendar( $atts ): string {
+		$atts = shortcode_atts(
+			array(
+				'month'    => (int) current_time( 'n' ),
+				'year'     => (int) current_time( 'Y' ),
+				'category' => '',
+			),
+			$atts,
+			'kh_event_calendar'
+		);
+
+		$month = (int) $atts['month'];
+		$year  = (int) $atts['year'];
+		$category = sanitize_text_field( $atts['category'] );
+
+		// Kalender-Daten berechnen
+		$first_day = mktime( 0, 0, 0, $month, 1, $year );
+		$days_in_month = (int) date( 't', $first_day );
+		$day_of_week = (int) date( 'N', $first_day ); // 1 (Mo) bis 7 (So)
+		
+		// Events für diesen Monat abrufen
+		$start_date = date( 'Y-m-d', $first_day );
+		$end_date = date( 'Y-m-d', mktime( 0, 0, 0, $month, $days_in_month, $year ) );
+		
+		$args = array(
+			'post_type'      => 'event',
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'meta_key'       => '_kh_event_start_date',
+			'orderby'        => 'meta_value',
+			'order'          => 'ASC',
+			'meta_query'     => array(
+				array(
+					'key'     => '_kh_event_start_date',
+					'value'   => array( $start_date, $end_date ),
+					'compare' => 'BETWEEN',
+					'type'    => 'DATE',
+				),
+			),
+		);
+
+		if ( ! empty( $category ) ) {
+			$args['tax_query'] = array(
+				array(
+					'taxonomy' => KH_Event_Category::TAXONOMY,
+					'field'    => 'slug',
+					'terms'    => $category,
+				),
+			);
+		}
+
+		$events_query = new WP_Query( $args );
+		
+		// Events nach Tag gruppieren
+		$events_by_day = array();
+		if ( $events_query->have_posts() ) {
+			while ( $events_query->have_posts() ) {
+				$events_query->the_post();
+				$event_id = get_the_ID();
+				$event_start = get_post_meta( $event_id, '_kh_event_start_date', true );
+				$day = (int) date( 'j', strtotime( $event_start ) );
+				
+				if ( ! isset( $events_by_day[ $day ] ) ) {
+					$events_by_day[ $day ] = array();
+				}
+				
+				$events_by_day[ $day ][] = array(
+					'id'    => $event_id,
+					'title' => get_the_title(),
+					'url'   => get_permalink(),
+					'time'  => date( 'H:i', strtotime( $event_start ) ),
+				);
+			}
+			wp_reset_postdata();
+		}
+
+		// Navigation URLs
+		$prev_month = $month - 1;
+		$prev_year = $year;
+		if ( $prev_month < 1 ) {
+			$prev_month = 12;
+			$prev_year--;
+		}
+		
+		$next_month = $month + 1;
+		$next_year = $year;
+		if ( $next_month > 12 ) {
+			$next_month = 1;
+			$next_year++;
+		}
+
+		$current_url = get_permalink();
+		$prev_url = add_query_arg( array( 'month' => $prev_month, 'year' => $prev_year ), $current_url );
+		$next_url = add_query_arg( array( 'month' => $next_month, 'year' => $next_year ), $current_url );
+
+		// Monatsnamen
+		$month_names = array(
+			1 => 'Januar', 2 => 'Februar', 3 => 'März', 4 => 'April',
+			5 => 'Mai', 6 => 'Juni', 7 => 'Juli', 8 => 'August',
+			9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Dezember'
+		);
+
+		$today = (int) current_time( 'j' );
+		$current_month = (int) current_time( 'n' );
+		$current_year = (int) current_time( 'Y' );
+
+		ob_start();
+		?>
+		<div class="kh-calendar">
+			<!-- Header mit Navigation -->
+			<div class="kh-calendar-header">
+				<a href="<?php echo esc_url( $prev_url ); ?>" class="kh-calendar-nav kh-calendar-nav--prev" aria-label="Vorheriger Monat">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M15 18l-6-6 6-6"/>
+					</svg>
+				</a>
+				
+				<h2 class="kh-calendar-title">
+					<?php echo esc_html( $month_names[ $month ] . ' ' . $year ); ?>
+				</h2>
+				
+				<a href="<?php echo esc_url( $next_url ); ?>" class="kh-calendar-nav kh-calendar-nav--next" aria-label="Nächster Monat">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M9 18l6-6-6-6"/>
+					</svg>
+				</a>
+			</div>
+
+			<!-- Kalender Grid -->
+			<div class="kh-calendar-grid">
+				<!-- Wochentage -->
+				<div class="kh-calendar-weekday">Mo</div>
+				<div class="kh-calendar-weekday">Di</div>
+				<div class="kh-calendar-weekday">Mi</div>
+				<div class="kh-calendar-weekday">Do</div>
+				<div class="kh-calendar-weekday">Fr</div>
+				<div class="kh-calendar-weekday">Sa</div>
+				<div class="kh-calendar-weekday">So</div>
+
+				<?php
+				// Leere Tage vor dem 1. des Monats
+				for ( $i = 1; $i < $day_of_week; $i++ ) {
+					echo '<div class="kh-calendar-day kh-calendar-day--empty"></div>';
+				}
+
+				// Tage des Monats
+				for ( $day = 1; $day <= $days_in_month; $day++ ) {
+					$has_events = isset( $events_by_day[ $day ] );
+					$is_today = ( $day === $today && $month === $current_month && $year === $current_year );
+					
+					$classes = array( 'kh-calendar-day' );
+					if ( $has_events ) {
+						$classes[] = 'kh-calendar-day--has-events';
+					}
+					if ( $is_today ) {
+						$classes[] = 'kh-calendar-day--today';
+					}
+					?>
+					<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
+						<span class="kh-calendar-day__number"><?php echo esc_html( $day ); ?></span>
+						
+						<?php if ( $has_events ) : ?>
+							<div class="kh-calendar-day__events">
+								<?php foreach ( $events_by_day[ $day ] as $event ) : ?>
+									<a href="<?php echo esc_url( $event['url'] ); ?>" class="kh-calendar-event" title="<?php echo esc_attr( $event['title'] ); ?>">
+										<span class="kh-calendar-event__dot"></span>
+										<span class="kh-calendar-event__title"><?php echo esc_html( $event['title'] ); ?></span>
+									</a>
+								<?php endforeach; ?>
+							</div>
+						<?php endif; ?>
+					</div>
+					<?php
+				}
+
+				// Leere Tage nach dem letzten Tag des Monats
+				$last_day_of_week = (int) date( 'N', mktime( 0, 0, 0, $month, $days_in_month, $year ) );
+				for ( $i = $last_day_of_week; $i < 7; $i++ ) {
+					echo '<div class="kh-calendar-day kh-calendar-day--empty"></div>';
+				}
+				?>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
 	}
 }
