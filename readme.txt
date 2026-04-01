@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.14.2
+Stable tag: 1.14.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,12 @@ Beispiel: `[kh_upcoming_events limit="3"]`
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.14.3 =
+* **BUGFIX:** Drop-Shadow bei Highlight-Karten weicher gemacht
+* Box-Shadow von 0 10px 40px auf 0 4px 20px reduziert (weniger harte Kante)
+* Hover-Shadow von 0 25px 70px auf 0 8px 30px reduziert
+* Opacity von 0.15 auf 0.08 reduziert (weicher Übergang)
 
 = 1.14.2 =
 * **BUGFIX:** Button-Größen vereinheitlicht
