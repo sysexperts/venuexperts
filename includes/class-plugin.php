@@ -245,6 +245,14 @@ class KH_Plugin {
 			'all'
 		);
 
+		wp_enqueue_style(
+			'kh-events-program',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/program.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
 		wp_enqueue_script(
 			'kh-frontend',
 			KH_EVENTS_PLUGIN_URL . 'assets/js/frontend.js',

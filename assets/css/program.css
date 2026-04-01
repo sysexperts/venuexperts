@@ -1,0 +1,257 @@
+/**
+ * Event Programm Liste
+ * Design nach Kulturhaus Osterfeld Vorlage
+ *
+ * @package KulturhausEvents
+ * @since   1.15.0
+ */
+
+/* ===========================
+   Programm Container
+   =========================== */
+.kh-event-program {
+	max-width: 750px;
+	margin: 0 auto;
+	padding: 40px 20px;
+}
+
+/* Monats-Navigation */
+.kh-program-month-nav {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	margin-bottom: 40px;
+	padding: 20px 0;
+	border-bottom: 3px solid #ffc107;
+}
+
+.kh-program-month-nav__button {
+	background: none;
+	border: none;
+	color: #333;
+	font-size: 24px;
+	cursor: pointer;
+	padding: 8px 16px;
+	transition: color 0.3s ease;
+}
+
+.kh-program-month-nav__button:hover {
+	color: #ffc107;
+}
+
+.kh-program-month-nav__button:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.kh-program-month-nav__current {
+	font-size: 20px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #000;
+	min-width: 150px;
+	text-align: center;
+}
+
+/* Monats-Überschrift */
+.kh-program-month-title {
+	font-size: 28px;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: #000;
+	margin: 0 0 30px 0;
+	letter-spacing: 1px;
+}
+
+/* Event-Liste */
+.kh-program-list {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+/* Event-Item */
+.kh-program-item {
+	display: grid;
+	grid-template-columns: 150px 1fr;
+	gap: 20px;
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	overflow: hidden;
+	transition: all 0.3s ease;
+	text-decoration: none;
+	color: inherit;
+}
+
+.kh-program-item:hover {
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	transform: translateY(-2px);
+}
+
+/* Event-Bild */
+.kh-program-item__image {
+	position: relative;
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	background: #f0f0f0;
+}
+
+.kh-program-item__image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.5s ease;
+}
+
+.kh-program-item:hover .kh-program-item__image img {
+	transform: scale(1.1);
+}
+
+/* Event-Content */
+.kh-program-item__content {
+	padding: 20px 20px 20px 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+/* Event-Meta (Datum & Preis) */
+.kh-program-item__meta {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	font-size: 12px;
+	color: #666;
+	margin-bottom: 4px;
+}
+
+.kh-program-item__date {
+	font-weight: 600;
+	color: #000;
+}
+
+.kh-program-item__price {
+	color: #666;
+}
+
+.kh-program-item__free {
+	color: #ffc107;
+	font-weight: 700;
+}
+
+/* Event-Titel */
+.kh-program-item__title {
+	font-size: 18px;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: #000;
+	margin: 0;
+	line-height: 1.3;
+	letter-spacing: 0.5px;
+}
+
+/* Event-Untertitel */
+.kh-program-item__subtitle {
+	font-size: 13px;
+	font-weight: 600;
+	color: #666;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	margin: 0;
+}
+
+/* Event-Beschreibung */
+.kh-program-item__description {
+	font-size: 14px;
+	line-height: 1.6;
+	color: #333;
+	margin: 8px 0;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* Event-Button */
+.kh-program-item__button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	background: none;
+	border: none;
+	color: #ffc107;
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-top: auto;
+	align-self: flex-start;
+}
+
+.kh-program-item__button:hover {
+	color: #ffb300;
+	gap: 12px;
+}
+
+.kh-program-item__button::after {
+	content: '→';
+	font-size: 16px;
+	transition: transform 0.3s ease;
+}
+
+.kh-program-item__button:hover::after {
+	transform: translateX(4px);
+}
+
+/* Empty State */
+.kh-program-empty {
+	text-align: center;
+	padding: 60px 20px;
+	color: #666;
+	font-size: 16px;
+}
+
+/* ===========================
+   Responsive Design
+   =========================== */
+@media (max-width: 768px) {
+	.kh-program-item {
+		grid-template-columns: 1fr;
+	}
+
+	.kh-program-item__image {
+		width: 100%;
+		height: 200px;
+	}
+
+	.kh-program-item__content {
+		padding: 20px;
+	}
+
+	.kh-program-month-nav__current {
+		font-size: 18px;
+		min-width: 120px;
+	}
+
+	.kh-program-month-title {
+		font-size: 24px;
+	}
+}
+
+@media (max-width: 480px) {
+	.kh-program-item__title {
+		font-size: 16px;
+	}
+
+	.kh-program-item__meta {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+	}
+}

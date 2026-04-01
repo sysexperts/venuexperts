@@ -26,6 +26,7 @@ class KH_Shortcodes {
 		add_shortcode( 'kh_events', array( $this, 'events_list' ) );
 		add_shortcode( 'kh_upcoming_events', array( $this, 'upcoming_events' ) );
 		add_shortcode( 'kh_event_highlights', array( $this, 'event_highlights' ) );
+		add_shortcode( 'kh_event_program', array( $this, 'event_program' ) );
 	}
 
 	/**
