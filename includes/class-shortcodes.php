@@ -481,4 +481,166 @@ class KH_Shortcodes {
 		</article>
 		<?php
 	}
+
+	/**
+	 * Shortcode: [kh_event_program]
+	 *
+	 * Zeigt eine monatliche Programm-Liste im Kulturhaus-Design.
+	 *
+	 * Attribute:
+	 * - month: Monat (1-12, Standard: aktueller Monat)
+	 * - year: Jahr (Standard: aktuelles Jahr)
+	 * - category: Kategorie-Slug
+	 * - show_navigation: true/false - Monatsnavigation anzeigen (Standard: true)
+	 *
+	 * @param array<string, mixed> $atts Shortcode-Attribute.
+	 * @return string HTML-Ausgabe.
+	 */
+	public function event_program( $atts ): string {
+		$atts = shortcode_atts(
+			array(
+				'month'           => (int) current_time( 'n' ),
+				'year'            => (int) current_time( 'Y' ),
+				'category'        => '',
+				'show_navigation' => 'true',
+			),
+			$atts,
+			'kh_event_program'
+		);
+
+		$month = absint( $atts['month'] );
+		$year  = absint( $atts['year'] );
+		$show_nav = $atts['show_navigation'] === 'true';
+
+		// Monatsgrenzen berechnen
+		$start_date = sprintf( '%04d-%02d-01 00:00:00', $year, $month );
+		$end_date   = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
+
+		// Query-Args
+		$args = array(
+			'post_type'      => KH_Event::POST_TYPE,
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'orderby'        => 'meta_value',
+			'order'          => 'ASC',
+			'meta_key'       => '_kh_event_start_date',
+			'meta_query'     => array(
+				array(
+					'key'     => '_kh_event_start_date',
+					'value'   => array( $start_date, $end_date ),
+					'compare' => 'BETWEEN',
+					'type'    => 'DATETIME',
+				),
+			),
+		);
+
+		// Kategorie-Filter
+		if ( ! empty( $atts['category'] ) ) {
+			$args['tax_query'] = array(
+				array(
+					'taxonomy' => KH_Event_Category::TAXONOMY,
+					'field'    => 'slug',
+					'terms'    => sanitize_text_field( $atts['category'] ),
+				),
+			);
+		}
+
+		$query = new WP_Query( $args );
+
+		ob_start();
+		?>
+		<div class="kh-event-program">
+			
+			<?php if ( $show_nav ) : ?>
+				<div class="kh-program-month-nav">
+					<button class="kh-program-month-nav__button" onclick="khNavigateMonth(-1)">‹</button>
+					<div class="kh-program-month-nav__current">
+						<?php echo esc_html( wp_date( 'F Y', strtotime( $start_date ) ) ); ?>
+					</div>
+					<button class="kh-program-month-nav__button" onclick="khNavigateMonth(1)">›</button>
+				</div>
+			<?php endif; ?>
+
+			<h2 class="kh-program-month-title">
+				<?php echo esc_html( strtoupper( wp_date( 'F', strtotime( $start_date ) ) ) ); ?>
+			</h2>
+
+			<?php if ( $query->have_posts() ) : ?>
+				<div class="kh-program-list">
+					<?php while ( $query->have_posts() ) : $query->the_post(); ?>
+						<?php $this->render_program_item( get_the_ID() ); ?>
+					<?php endwhile; ?>
+				</div>
+			<?php else : ?>
+				<div class="kh-program-empty">
+					<p><?php esc_html_e( 'Keine Veranstaltungen in diesem Monat.', 'kulturhaus-events' ); ?></p>
+				</div>
+			<?php endif; ?>
+
+		</div>
+		<?php
+		wp_reset_postdata();
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Einzelnes Programm-Item rendern.
+	 *
+	 * @param int $event_id Event-ID.
+	 */
+	private function render_program_item( int $event_id ): void {
+		$start_date = get_post_meta( $event_id, '_kh_event_start_date', true );
+		$price_regular = get_post_meta( $event_id, '_kh_event_price_regular', true );
+		$price_reduced = get_post_meta( $event_id, '_kh_event_price_reduced', true );
+		$cost_free = get_post_meta( $event_id, '_kh_event_cost_free', true );
+		$ticket_url = get_post_meta( $event_id, '_kh_event_url', true );
+		
+		// Kategorien für Untertitel
+		$categories = wp_get_post_terms( $event_id, KH_Event_Category::TAXONOMY, array( 'fields' => 'names' ) );
+		$subtitle = ! empty( $categories ) ? implode( ', ', $categories ) : '';
+
+		// Datum formatieren
+		$date_formatted = wp_date( 'D, d.m.Y, H:i', strtotime( $start_date ) ) . ' Uhr';
+
+		// Preis
+		$price_display = '';
+		if ( $cost_free ) {
+			$price_display = '<span class="kh-program-item__free">' . esc_html__( 'Eintritt frei', 'kulturhaus-events' ) . '</span>';
+		} elseif ( $price_regular ) {
+			$price_display = '<span class="kh-program-item__price">€ ' . esc_html( $price_regular ) . '</span>';
+		}
+
+		$permalink = get_permalink( $event_id );
+		?>
+		<a href="<?php echo esc_url( $permalink ); ?>" class="kh-program-item">
+			<div class="kh-program-item__image">
+				<?php if ( has_post_thumbnail( $event_id ) ) : ?>
+					<?php echo get_the_post_thumbnail( $event_id, 'medium' ); ?>
+				<?php endif; ?>
+			</div>
+			
+			<div class="kh-program-item__content">
+				<div class="kh-program-item__meta">
+					<span class="kh-program-item__date"><?php echo esc_html( $date_formatted ); ?></span>
+					<?php echo wp_kses_post( $price_display ); ?>
+				</div>
+
+				<h3 class="kh-program-item__title"><?php echo esc_html( get_the_title( $event_id ) ); ?></h3>
+
+				<?php if ( $subtitle ) : ?>
+					<div class="kh-program-item__subtitle"><?php echo esc_html( strtoupper( $subtitle ) ); ?></div>
+				<?php endif; ?>
+
+				<div class="kh-program-item__description">
+					<?php echo wp_trim_words( get_the_excerpt( $event_id ), 20 ); ?>
+				</div>
+
+				<span class="kh-program-item__button">
+					<?php esc_html_e( 'Infos & Tickets', 'kulturhaus-events' ); ?>
+				</span>
+			</div>
+		</a>
+		<?php
+	}
 }

@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.15.0
+Stable tag: 1.15.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,16 +57,26 @@ Parameter:
 * order - ASC oder DESC (Standard: ASC)
 * show_past - true/false (Standard: false)
 
-Beispiel: `[kh_events limit="5" category="konzerte"]`
+Beispiel: `[kh_events limit="10" category="konzerte"]`
 
 **[kh_upcoming_events]**
-Zeigt kommende Veranstaltungen in kompakter Form.
+Zeigt kommende Veranstaltungen an.
 
 Parameter:
 * limit - Anzahl (Standard: 5)
 * category - Kategorie-Slug
 
 Beispiel: `[kh_upcoming_events limit="3"]`
+
+**[kh_event_program]**
+Zeigt monatliche Programm-Liste im Kulturhaus-Design
+
+Parameter:
+* month - Monat (1-12)
+* year - Jahr
+* show_navigation - true/false (Standard: true)
+
+Beispiel: `[kh_event_program month="4" year="2026" show_navigation="true"]`
 
 == Widgets ==
 
