@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.17.0
+Stable tag: 1.17.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,17 @@ Beispiele:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.17.1 =
+* **ÄNDERUNG:** News-Bereich scrollt jetzt mit (nicht mehr sticky)
+* Besseres Scroll-Verhalten
+
+= 1.17.0 =
+* **FEATURE:** News-Bereich zeigt jetzt automatisch WordPress-Beiträge
+* Neueste 5 Beiträge mit Bild, Datum, Titel, Auszug
+* "Weiterlesen" Link zu jedem Beitrag
+* Schönes Karten-Design passend zum Event-Bereich
+* Erstelle Beiträge unter "Beiträge" → "Erstellen"
 
 = 1.16.1 =
 * **ÄNDERUNG:** Standard-Limit auf 5 Events reduziert

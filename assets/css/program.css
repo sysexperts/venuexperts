@@ -31,8 +31,6 @@
 /* News Spalte Rechts */
 .kh-program-news {
 	width: 100%;
-	position: sticky;
-	top: 20px;
 }
 
 /* Monats-Navigation */

@@ -3,7 +3,7 @@
  * Plugin Name:       Kulturhaus Events
  * Plugin URI:        https://github.com/sysexperts/venuexperts
  * Description:       Professionelles Veranstaltungsmanagement für behördliche und kulturelle Einrichtungen. DSGVO-konform, barrierefrei (BITV 2.0 / WCAG 2.1 AA).
- * Version:           1.17.0
+ * Version:           1.17.1
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Author:            SysExperts
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin-Konstanten.
  */
-define( 'KH_EVENTS_VERSION', '1.17.0' );
+define( 'KH_EVENTS_VERSION', '1.17.1' );
 define( 'KH_EVENTS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'KH_EVENTS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'KH_EVENTS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
