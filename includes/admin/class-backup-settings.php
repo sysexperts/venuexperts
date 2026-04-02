@@ -303,6 +303,10 @@ class KH_Backup_Settings {
 
 		<script>
 		jQuery(document).ready(function($) {
+			// Debug: Prüfen ob jQuery und ajaxurl verfügbar sind
+			console.log('Backup-Script geladen');
+			console.log('ajaxurl:', typeof ajaxurl !== 'undefined' ? ajaxurl : 'undefined');
+
 			$('#kh_backup_location').on('change', function() {
 				var customRow = $('#kh_custom_path_row');
 				if ($(this).val() === 'custom') {
@@ -312,33 +316,51 @@ class KH_Backup_Settings {
 				}
 			});
 
-			$('#kh_create_manual_backup').on('click', function() {
+			$('#kh_create_manual_backup').on('click', function(e) {
+				e.preventDefault();
+				
 				var $button = $(this);
 				var $spinner = $('#kh_backup_spinner');
 				var $result = $('#kh_backup_result');
 
+				console.log('Backup-Button geklickt');
+
 				$button.prop('disabled', true);
 				$spinner.show();
-				$result.html('');
+				$result.html('<div class="notice notice-info inline"><p><?php esc_html_e( 'Backup wird erstellt...', 'kulturhaus-events' ); ?></p></div>');
+
+				var data = {
+					action: 'kh_create_manual_backup',
+					nonce: '<?php echo wp_create_nonce( 'kh_backup_nonce' ); ?>'
+				};
+
+				console.log('Sende AJAX-Request:', data);
 
 				$.ajax({
 					url: ajaxurl,
 					type: 'POST',
-					data: {
-						action: 'kh_create_manual_backup',
-						nonce: '<?php echo wp_create_nonce( 'kh_backup_nonce' ); ?>'
+					data: data,
+					dataType: 'json',
+					beforeSend: function() {
+						console.log('AJAX-Request wird gesendet...');
 					},
 					success: function(response) {
-						if (response.success) {
+						console.log('AJAX-Response:', response);
+						
+						if (response && response.success) {
 							$result.html('<div class="notice notice-success inline"><p>' + response.data.message + '</p></div>');
-						} else {
+						} else if (response && response.data) {
 							$result.html('<div class="notice notice-error inline"><p>' + response.data.message + '</p></div>');
+						} else {
+							$result.html('<div class="notice notice-error inline"><p><?php esc_html_e( 'Ungültige Antwort vom Server.', 'kulturhaus-events' ); ?></p></div>');
 						}
 					},
-					error: function() {
-						$result.html('<div class="notice notice-error inline"><p><?php esc_html_e( 'Ein Fehler ist aufgetreten.', 'kulturhaus-events' ); ?></p></div>');
+					error: function(xhr, status, error) {
+						console.error('AJAX-Fehler:', {xhr: xhr, status: status, error: error});
+						$result.html('<div class="notice notice-error inline"><p><?php esc_html_e( 'AJAX-Fehler: ', 'kulturhaus-events' ); ?>' + error + '</p></div>');
 					},
 					complete: function() {
+						console.log('AJAX-Request abgeschlossen');
 						$button.prop('disabled', false);
 						$spinner.hide();
 					}

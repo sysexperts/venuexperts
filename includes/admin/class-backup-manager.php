@@ -260,15 +260,22 @@ class KH_Backup_Manager {
 	 * AJAX-Handler für manuelles Backup.
 	 */
 	public static function handle_manual_backup(): void {
+		// Debug: Log AJAX-Request
+		error_log('KH Backup: AJAX-Request erhalten');
+		
 		check_ajax_referer( 'kh_backup_nonce', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
+			error_log('KH Backup: Keine Berechtigung');
 			wp_send_json_error( array(
 				'message' => __( 'Keine Berechtigung.', 'kulturhaus-events' ),
 			) );
 		}
 
+		error_log('KH Backup: Erstelle Backup...');
 		$result = self::create_backup( self::BACKUP_FULL );
+		error_log('KH Backup: Ergebnis: ' . print_r($result, true));
+		
 		wp_send_json( $result );
 	}
 
