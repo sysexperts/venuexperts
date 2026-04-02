@@ -233,6 +233,25 @@ class KH_Plugin {
 			'all'
 		);
 
+		// Program JS für Filter
+		wp_enqueue_script(
+			'kh-events-program',
+			KH_EVENTS_PLUGIN_URL . 'assets/js/program.js',
+			array( 'jquery' ),
+			KH_EVENTS_VERSION,
+			true
+		);
+
+		// AJAX-Daten für Program JS
+		wp_localize_script(
+			'kh-events-program',
+			'khProgramData',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'kh_program_nonce' ),
+			)
+		);
+
 		// Calendar CSS immer laden (für Kalender-Shortcode)
 		wp_enqueue_style(
 			'kh-events-calendar',
