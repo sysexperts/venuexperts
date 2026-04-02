@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.20.1
+Stable tag: 1.20.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,34 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.20.2 =
+* **NEU:** Filter-Leiste für `[kh_event_program]` Widget
+* Suchfeld für Event-Namen (mit Debouncing)
+* Kategorie-Filter Dropdown
+* Zeitraum-Filter (Heute, Diese Woche, Dieser Monat, Nächster Monat, Dieses Jahr, Kommende Events)
+* "Zurücksetzen" Button
+* Live Ergebnis-Counter
+* AJAX-basierte Filterung ohne Reload
+* Top Bar Layout (horizontal über dem Widget)
+* Modernes Design mit roter Akzentfarbe (#dc143c)
+* Responsive Design (Desktop, Tablet, Mobile)
+* Loading-Animation während Filterung
+* Visual Feedback für aktive Filter
+
+= 1.20.1 =
+* **BUGFIX:** TypeError in event_search Shortcode behoben (mktime() Parameter müssen int sein)
+* Explizites Type-Casting für $month und $year in Monats-Dropdown
+
+= 1.20.0 =
+* **NEU:** Event-Kalender Ansicht mit Shortcode `[kh_event_calendar]`
+* Monatskalender mit Navigation (Pfeile für vor/zurück)
+* Events als rote Badges in Kalendertagen
+* Heutiger Tag rot markiert
+* Klickbare Events führen zur Detailseite
+* Rote Akzentfarbe (#dc143c) statt gelb
+* Filter nach Kategorie möglich
+* Neue CSS-Datei: calendar.css
 
 = 1.19.0 =
 * **NEU:** Event-Kalender Ansicht mit Shortcode `[kh_event_calendar]`

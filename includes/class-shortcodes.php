@@ -580,13 +580,103 @@ class KH_Shortcodes {
 		$show_all_link = $atts['show_all_link'] === 'true';
 		$all_link_url = esc_url( $atts['all_link_url'] );
 
+		// Kategorien für Filter abrufen
+		$categories = get_terms(
+			array(
+				'taxonomy'   => KH_Event_Category::TAXONOMY,
+				'hide_empty' => true,
+			)
+		);
+
 		ob_start();
 		?>
-		<div class="kh-event-program">
+		<div class="kh-event-program" data-limit="<?php echo esc_attr( $limit ); ?>" data-show-all-link="<?php echo esc_attr( $show_all_link ? '1' : '0' ); ?>" data-all-link-url="<?php echo esc_attr( $all_link_url ); ?>">
+			
+			<!-- Filter Top Bar -->
+			<div class="kh-program-filter-bar">
+				<div class="kh-program-filter-bar__inner">
+					
+					<!-- Suchfeld -->
+					<div class="kh-program-filter-field kh-program-filter-field--search">
+						<label for="kh-program-search">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<circle cx="11" cy="11" r="8"></circle>
+								<path d="m21 21-4.35-4.35"></path>
+							</svg>
+							Suche
+						</label>
+						<input 
+							type="text" 
+							id="kh-program-search" 
+							class="kh-program-filter-input" 
+							placeholder="Event-Name suchen..."
+							autocomplete="off"
+						>
+					</div>
+
+					<!-- Kategorie Filter -->
+					<div class="kh-program-filter-field">
+						<label for="kh-program-category">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M4 4h7l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
+							</svg>
+							Kategorie
+						</label>
+						<select id="kh-program-category" class="kh-program-filter-select">
+							<option value="">Alle Kategorien</option>
+							<?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
+								<?php foreach ( $categories as $category ) : ?>
+									<option value="<?php echo esc_attr( $category->slug ); ?>">
+										<?php echo esc_html( $category->name ); ?>
+									</option>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</select>
+					</div>
+
+					<!-- Zeitraum Filter -->
+					<div class="kh-program-filter-field">
+						<label for="kh-program-timeframe">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+								<line x1="16" y1="2" x2="16" y2="6"></line>
+								<line x1="8" y1="2" x2="8" y2="6"></line>
+								<line x1="3" y1="10" x2="21" y2="10"></line>
+							</svg>
+							Zeitraum
+						</label>
+						<select id="kh-program-timeframe" class="kh-program-filter-select">
+							<option value="upcoming">Kommende Events</option>
+							<option value="today">Heute</option>
+							<option value="this-week">Diese Woche</option>
+							<option value="this-month">Dieser Monat</option>
+							<option value="next-month">Nächster Monat</option>
+							<option value="this-year">Dieses Jahr</option>
+						</select>
+					</div>
+
+					<!-- Reset & Results Count -->
+					<div class="kh-program-filter-actions">
+						<button type="button" class="kh-program-filter-reset" id="kh-program-filter-reset">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polyline points="1 4 1 10 7 10"></polyline>
+								<path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+							</svg>
+							Zurücksetzen
+						</button>
+						<div class="kh-program-filter-count">
+							<strong id="kh-program-results-count"><?php echo esc_html( $query->found_posts ); ?></strong> 
+							<span>Veranstaltungen</span>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
 			<div class="kh-program-container">
 				
 				<!-- Events Links (60%) -->
-				<div class="kh-program-events">
+				<div class="kh-program-events" id="kh-program-events-list">
 					<?php if ( $show_nav ) : ?>
 						<div class="kh-program-month-nav">
 							<button class="kh-program-month-nav__button" onclick="khNavigateMonth(-1)">‹</button>
@@ -1060,8 +1150,8 @@ class KH_Shortcodes {
 								$current_month = (int) current_time( 'n' );
 								$current_year = (int) current_time( 'Y' );
 								for ( $i = 0; $i < 12; $i++ ) {
-									$month = ( $current_month + $i - 1 ) % 12 + 1;
-									$year = $current_year + floor( ( $current_month + $i - 1 ) / 12 );
+									$month = (int) ( ( $current_month + $i - 1 ) % 12 + 1 );
+									$year = (int) ( $current_year + floor( ( $current_month + $i - 1 ) / 12 ) );
 									$month_name = date_i18n( 'F Y', mktime( 0, 0, 0, $month, 1, $year ) );
 									$value = $year . '-' . str_pad( (string) $month, 2, '0', STR_PAD_LEFT );
 									?>

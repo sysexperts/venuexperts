@@ -25,6 +25,8 @@ class KH_Ajax {
 	public function register(): void {
 		add_action( 'wp_ajax_kh_search_events', array( $this, 'search_events' ) );
 		add_action( 'wp_ajax_nopriv_kh_search_events', array( $this, 'search_events' ) );
+		add_action( 'wp_ajax_kh_filter_program', array( $this, 'filter_program' ) );
+		add_action( 'wp_ajax_nopriv_kh_filter_program', array( $this, 'filter_program' ) );
 	}
 
 	/**
