@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.21.2
+Stable tag: 1.21.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,14 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.21.3 =
+* **BUGFIX:** Backup-Button weiße Seite (admin-post.php) behoben
+* AJAX-URL korrigiert mit Fallback zu admin-ajax.php
+* Bessere Fehlerbehandlung mit spezifischen Fehlermeldungen
+* Test-Handler für AJAX-Endpunkt hinzugefügt
+* Exception-Handling im Backup-Prozess
+* Console-Logs für detailliertes Debugging
 
 = 1.21.2 =
 * **BUGFIX:** Backup-Button weiße Seite behoben

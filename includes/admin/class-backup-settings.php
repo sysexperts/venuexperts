@@ -334,10 +334,13 @@ class KH_Backup_Settings {
 					nonce: '<?php echo wp_create_nonce( 'kh_backup_nonce' ); ?>'
 				};
 
+				// Korrekte AJAX-URL verwenden
+				var ajaxUrl = typeof ajaxurl !== 'undefined' ? ajaxurl : '<?php echo admin_url( 'admin-ajax.php' ); ?>';
+				console.log('AJAX-URL:', ajaxUrl);
 				console.log('Sende AJAX-Request:', data);
 
 				$.ajax({
-					url: ajaxurl,
+					url: ajaxUrl,
 					type: 'POST',
 					data: data,
 					dataType: 'json',
@@ -357,7 +360,16 @@ class KH_Backup_Settings {
 					},
 					error: function(xhr, status, error) {
 						console.error('AJAX-Fehler:', {xhr: xhr, status: status, error: error});
-						$result.html('<div class="notice notice-error inline"><p><?php esc_html_e( 'AJAX-Fehler: ', 'kulturhaus-events' ); ?>' + error + '</p></div>');
+						console.error('Response Text:', xhr.responseText);
+						
+						var errorMsg = '<?php esc_html_e( 'AJAX-Fehler: ', 'kulturhaus-events' ); ?>' + error;
+						if (xhr.status === 404) {
+							errorMsg = '<?php esc_html_e( 'AJAX-Endpunkt nicht gefunden. Bitte überprüfen Sie die Plugin-Konfiguration.', 'kulturhaus-events' ); ?>';
+						} else if (xhr.status === 500) {
+							errorMsg = '<?php esc_html_e( 'Server-Fehler. Bitte überprüfen Sie die Server-Logs.', 'kulturhaus-events' ); ?>';
+						}
+						
+						$result.html('<div class="notice notice-error inline"><p>' + errorMsg + '</p></div>');
 					},
 					complete: function() {
 						console.log('AJAX-Request abgeschlossen');

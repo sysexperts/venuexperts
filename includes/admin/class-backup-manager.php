@@ -263,6 +263,13 @@ class KH_Backup_Manager {
 		// Debug: Log AJAX-Request
 		error_log('KH Backup: AJAX-Request erhalten');
 		
+		// Test-Response für Debugging
+		if ( isset( $_GET['test'] ) && $_GET['test'] === '1' ) {
+			wp_send_json_success( array(
+				'message' => __( 'AJAX-Endpunkt funktioniert korrekt!', 'kulturhaus-events' ),
+			) );
+		}
+		
 		check_ajax_referer( 'kh_backup_nonce', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -273,10 +280,22 @@ class KH_Backup_Manager {
 		}
 
 		error_log('KH Backup: Erstelle Backup...');
-		$result = self::create_backup( self::BACKUP_FULL );
-		error_log('KH Backup: Ergebnis: ' . print_r($result, true));
 		
-		wp_send_json( $result );
+		try {
+			$result = self::create_backup( self::BACKUP_FULL );
+			error_log('KH Backup: Ergebnis: ' . print_r($result, true));
+			
+			if ( $result['success'] ) {
+				wp_send_json_success( $result );
+			} else {
+				wp_send_json_error( $result );
+			}
+		} catch ( Exception $e ) {
+			error_log('KH Backup Exception: ' . $e->getMessage());
+			wp_send_json_error( array(
+				'message' => __( 'Backup-Fehler: ', 'kulturhaus-events' ) . $e->getMessage(),
+			) );
+		}
 	}
 
 	/**
