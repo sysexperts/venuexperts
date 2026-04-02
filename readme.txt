@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.20.3
+Stable tag: 1.20.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,10 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.20.4 =
+* **BUGFIX:** AJAX-Handler Konflikt behoben - filter_program aus KH_Ajax entfernt
+* filter_program wird nur noch in KH_Ajax_Program_Filter registriert
 
 = 1.20.3 =
 * **DESIGN:** Filter-Leiste an Widget-Design angepasst
