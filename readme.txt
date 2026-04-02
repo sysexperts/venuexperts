@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.20.4
+Stable tag: 1.21.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,20 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.21.0 =
+* **NEUES FEATURE:** Vollständiges Backup-System implementiert
+* Backup-Einstellungen im Admin-Menü (Veranstaltungen → Backup)
+* Automatische Backups (täglich, wöchentlich, monatlich)
+* Manuelle Backup-Erstellung mit einem Klick
+* Backup-Typen: Events, Einstellungen, Voll-Backup
+* Medien-Dateien optional in Backups einbeziehen
+* Flexible Speicherorte (wp-content oder benutzerdefiniert)
+* Alte Backups automatisch aufräumen
+* E-Mail-Benachrichtigungen bei Backup-Erstellung
+* JSON-Format für einfache Wiederherstellung
+* **BUGFIX:** class-activator.php Fehler behoben
+* Plugin komplett überarbeitet und stabilisiert
 
 = 1.20.4 =
 * **BUGFIX:** AJAX-Handler Konflikt behoben - filter_program aus KH_Ajax entfernt

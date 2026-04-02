@@ -38,6 +38,7 @@ class KH_Plugin {
 		$this->register_widgets();
 		$this->register_ical_export();
 		$this->register_import_export();
+		$this->register_backup();
 		$this->register_query_filters();
 	}
 
@@ -378,6 +379,18 @@ class KH_Plugin {
 	private function register_import_export(): void {
 		$import_export = new KH_Import_Export();
 		$import_export->register();
+	}
+
+	/**
+	 * Backup & Restore registrieren.
+	 */
+	private function register_backup(): void {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$backup_page = new KH_Backup_Page();
+		$backup_page->register();
 	}
 
 	/**

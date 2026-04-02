@@ -25,6 +25,7 @@ class KH_Admin_Page {
 	public function register(): void {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_init', array( 'KH_Backup_Settings', 'register_settings' ) );
 	}
 
 	/**
@@ -38,6 +39,16 @@ class KH_Admin_Page {
 			'manage_options',
 			'kh-events-settings',
 			array( $this, 'render_settings_page' )
+		);
+
+		// Backup-Einstellungen Seite
+		add_submenu_page(
+			'edit.php?post_type=kh_event',
+			__( 'Backup', 'kulturhaus-events' ),
+			__( 'Backup', 'kulturhaus-events' ),
+			'manage_options',
+			'kh-events-backup',
+			array( 'KH_Backup_Settings', 'render_settings_page' )
 		);
 	}
 

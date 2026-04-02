@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//g/Meine Ablage/8 - Intelego Projekte/**)",
+      "Bash(powershell -Command \":*)"
+    ]
+  }
+}
