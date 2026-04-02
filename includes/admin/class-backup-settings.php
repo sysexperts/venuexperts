@@ -269,14 +269,22 @@ class KH_Backup_Settings {
 					<div class="kh-backup-section">
 						<h2><?php esc_html_e( 'Manuelles Backup', 'kulturhaus-events' ); ?></h2>
 						
-						<p>
-							<button type="button" id="kh_create_manual_backup" class="button button-primary">
+						<?php
+						// Backup erstellen, wenn Formular gesendet
+						if ( isset( $_POST['kh_create_backup'] ) && check_admin_referer( 'kh_backup_nonce' ) ) {
+							$result = KH_Backup_Manager::create_backup( KH_Backup_Manager::BACKUP_FULL );
+							$class = $result['success'] ? 'notice-success' : 'notice-error';
+							echo '<div class="notice ' . $class . ' inline"><p>' . esc_html( $result['message'] ) . '</p></div>';
+						}
+						?>
+						
+						<form method="post" action="">
+							<?php wp_nonce_field( 'kh_backup_nonce' ); ?>
+							<input type="hidden" name="kh_create_backup" value="1">
+							<button type="submit" class="button button-primary">
 								<?php esc_html_e( 'Jetzt Backup erstellen', 'kulturhaus-events' ); ?>
 							</button>
-							<span class="spinner" id="kh_backup_spinner" style="display: none;"></span>
-						</p>
-						
-						<div id="kh_backup_result" style="margin-top: 10px;"></div>
+						</form>
 					</div>
 				</div>
 
@@ -303,10 +311,6 @@ class KH_Backup_Settings {
 
 		<script>
 		jQuery(document).ready(function($) {
-			// Debug: Prüfen ob jQuery und ajaxurl verfügbar sind
-			console.log('Backup-Script geladen');
-			console.log('ajaxurl:', typeof ajaxurl !== 'undefined' ? ajaxurl : 'undefined');
-
 			$('#kh_backup_location').on('change', function() {
 				var customRow = $('#kh_custom_path_row');
 				if ($(this).val() === 'custom') {
@@ -314,69 +318,6 @@ class KH_Backup_Settings {
 				} else {
 					customRow.hide();
 				}
-			});
-
-			$('#kh_create_manual_backup').on('click', function(e) {
-				e.preventDefault();
-				
-				var $button = $(this);
-				var $spinner = $('#kh_backup_spinner');
-				var $result = $('#kh_backup_result');
-
-				console.log('Backup-Button geklickt');
-
-				$button.prop('disabled', true);
-				$spinner.show();
-				$result.html('<div class="notice notice-info inline"><p><?php esc_html_e( 'Backup wird erstellt...', 'kulturhaus-events' ); ?></p></div>');
-
-				var data = {
-					action: 'kh_create_manual_backup',
-					nonce: '<?php echo wp_create_nonce( 'kh_backup_nonce' ); ?>'
-				};
-
-				// Korrekte AJAX-URL verwenden
-				var ajaxUrl = typeof ajaxurl !== 'undefined' ? ajaxurl : '<?php echo admin_url( 'admin-ajax.php' ); ?>';
-				console.log('AJAX-URL:', ajaxUrl);
-				console.log('Sende AJAX-Request:', data);
-
-				$.ajax({
-					url: ajaxUrl,
-					type: 'POST',
-					data: data,
-					dataType: 'json',
-					beforeSend: function() {
-						console.log('AJAX-Request wird gesendet...');
-					},
-					success: function(response) {
-						console.log('AJAX-Response:', response);
-						
-						if (response && response.success) {
-							$result.html('<div class="notice notice-success inline"><p>' + response.data.message + '</p></div>');
-						} else if (response && response.data) {
-							$result.html('<div class="notice notice-error inline"><p>' + response.data.message + '</p></div>');
-						} else {
-							$result.html('<div class="notice notice-error inline"><p><?php esc_html_e( 'Ungültige Antwort vom Server.', 'kulturhaus-events' ); ?></p></div>');
-						}
-					},
-					error: function(xhr, status, error) {
-						console.error('AJAX-Fehler:', {xhr: xhr, status: status, error: error});
-						console.error('Response Text:', xhr.responseText);
-						
-						var errorMsg = '<?php esc_html_e( 'AJAX-Fehler: ', 'kulturhaus-events' ); ?>' + error;
-						if (xhr.status === 404) {
-							errorMsg = '<?php esc_html_e( 'AJAX-Endpunkt nicht gefunden. Bitte überprüfen Sie die Plugin-Konfiguration.', 'kulturhaus-events' ); ?>';
-						} else if (xhr.status === 500) {
-							errorMsg = '<?php esc_html_e( 'Server-Fehler. Bitte überprüfen Sie die Server-Logs.', 'kulturhaus-events' ); ?>';
-						}
-						
-						$result.html('<div class="notice notice-error inline"><p>' + errorMsg + '</p></div>');
-					},
-					complete: function() {
-						console.log('AJAX-Request abgeschlossen');
-						$button.prop('disabled', false);
-						$spinner.hide();
-					}
-				});
 			});
 		});
 		</script>
