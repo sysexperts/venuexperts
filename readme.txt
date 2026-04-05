@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.24.4
+Stable tag: 1.25.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,13 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.25.0 =
+* **FEATURE:** Neuer Shortcode `[kh_event_archive]` - Veranstaltungsübersicht mit Monats-Gruppierung
+* **FIX:** Datumsformat-Bug behoben ("JanJanJan" -> "Jan")
+* **DESIGN:** Events nach Monat gruppiert mit stylischen Monats-Headern
+* **UX:** Pagination zentriert und im Design-System
+* **CHANGE:** Archive-Template Datumsformat korrigiert (MMM -> M)
 
 = 1.24.4 =
 * **DESIGN:** Highlights-Titel mit rotem Gradient-Effekt (3 Rottöne: #dc143c, #ff1744, #b91c1c)

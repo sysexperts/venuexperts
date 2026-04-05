@@ -1,10 +1,17 @@
 /**
  * Event Archive Grid Design
- * Im Highlights-Stil
+ * Im Highlights-Stil mit Monats-Gruppierung
  *
  * @package KulturhausEvents
  * @since   1.18.0
  */
+
+/* Archive Container */
+.kh-events-archive {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
 
 /* Archive Header */
 .kh-events-archive__header {
@@ -21,14 +28,39 @@
 	letter-spacing: 1px;
 }
 
+/* Month Group */
+.kh-events-month-group {
+	margin-bottom: 80px;
+}
+
+.kh-events-month-header {
+	font-size: 32px;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: #000;
+	margin: 0 0 40px 0;
+	padding-bottom: 16px;
+	border-bottom: 4px solid #dc143c;
+	letter-spacing: 2px;
+	position: relative;
+}
+
+.kh-events-month-header::after {
+	content: '';
+	position: absolute;
+	bottom: -4px;
+	left: 0;
+	width: 120px;
+	height: 4px;
+	background: #000;
+}
+
 /* Events Grid */
 .kh-events-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 40px;
-	max-width: 1400px;
-	margin: 0 auto 60px;
-	padding: 0 20px;
+	margin-bottom: 40px;
 }
 
 /* Empty State */
@@ -39,7 +71,59 @@
 	font-size: 18px;
 }
 
-/* Pagination */
+/* Pagination - Zentriert */
+.kh-events-pagination {
+	display: flex;
+	justify-content: center;
+	margin: 80px 0 40px;
+}
+
+.kh-events-pagination .page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 8px;
+}
+
+.kh-events-pagination .page-numbers li {
+	display: inline-block;
+}
+
+.kh-events-pagination .page-numbers a,
+.kh-events-pagination .page-numbers span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	height: 44px;
+	padding: 0 16px;
+	background: #fff;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	color: #000;
+	font-weight: 700;
+	text-decoration: none;
+	transition: all 0.3s ease;
+}
+
+.kh-events-pagination .page-numbers a:hover,
+.kh-events-pagination .page-numbers .current {
+	background: #dc143c;
+	border-color: #dc143c;
+	color: #fff;
+	transform: translateY(-2px);
+}
+
+.kh-events-pagination .page-numbers .dots {
+	border: none;
+	background: transparent;
+	transform: none;
+}
+
+/* Legacy Pagination Support */
 .pagination {
 	display: flex;
 	justify-content: center;

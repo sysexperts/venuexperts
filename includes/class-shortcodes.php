@@ -31,6 +31,7 @@ class KH_Shortcodes {
 		add_shortcode( 'kh_event_search', array( $this, 'event_search' ) );
 		add_shortcode( 'kh_event_countdown', array( $this, 'event_countdown' ) );
 		add_shortcode( 'kh_week_preview', array( $this, 'week_preview' ) );
+		add_shortcode( 'kh_event_archive', array( $this, 'event_archive' ) );
 	}
 
 	/**
@@ -1600,6 +1601,126 @@ class KH_Shortcodes {
 			</div>
 		</div>
 		<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Shortcode: [kh_event_archive]
+	 *
+	 * Zeigt alle Veranstaltungen gruppiert nach Monat mit Pagination.
+	 *
+	 * @param array $atts Shortcode-Attribute.
+	 * @return string HTML-Ausgabe.
+	 */
+	public function event_archive( $atts ): string {
+		$atts = shortcode_atts(
+			array(
+				'per_page' => 12,
+			),
+			$atts,
+			'kh_event_archive'
+		);
+
+		$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+		$args = array(
+			'post_type'      => 'kh_event',
+			'posts_per_page' => (int) $atts['per_page'],
+			'paged'          => $paged,
+			'post_status'    => 'publish',
+			'meta_key'       => '_kh_event_start_date',
+			'orderby'        => 'meta_value',
+			'order'          => 'ASC',
+			'meta_query'     => array(
+				array(
+					'key'     => '_kh_event_start_date',
+					'value'   => current_time( 'mysql' ),
+					'compare' => '>=',
+					'type'    => 'DATETIME',
+				),
+			),
+		);
+
+		$query = new WP_Query( $args );
+
+		if ( ! $query->have_posts() ) {
+			return '<p class="kh-events-archive__empty">' . esc_html__( 'Derzeit sind keine Veranstaltungen geplant.', 'kulturhaus-events' ) . '</p>';
+		}
+
+		// Events nach Monat gruppieren
+		$events_by_month = array();
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$start_date = get_post_meta( get_the_ID(), '_kh_event_start_date', true );
+			$month_key  = gmdate( 'Y-m', strtotime( $start_date ) );
+			
+			if ( ! isset( $events_by_month[ $month_key ] ) ) {
+				$events_by_month[ $month_key ] = array(
+					'month_name' => wp_date( 'F Y', strtotime( $start_date ) ),
+					'events'     => array(),
+				);
+			}
+			
+			$events_by_month[ $month_key ]['events'][] = array(
+				'id'         => get_the_ID(),
+				'title'      => get_the_title(),
+				'start_date' => $start_date,
+				'permalink'  => get_permalink(),
+				'thumbnail'  => get_the_post_thumbnail_url( get_the_ID(), 'large' ),
+			);
+		}
+		wp_reset_postdata();
+
+		ob_start();
+		?>
+		<div class="kh-events-archive">
+			<?php foreach ( $events_by_month as $month_data ) : ?>
+				<div class="kh-events-month-group">
+					<h2 class="kh-events-month-header"><?php echo esc_html( strtoupper( $month_data['month_name'] ) ); ?></h2>
+					
+					<div class="kh-events-grid">
+						<?php foreach ( $month_data['events'] as $event ) : ?>
+							<article class="kh-highlight-card">
+								<a href="<?php echo esc_url( $event['permalink'] ); ?>" class="kh-highlight-card__link">
+									
+									<?php if ( $event['thumbnail'] ) : ?>
+										<div class="kh-highlight-card__image">
+											<img src="<?php echo esc_url( $event['thumbnail'] ); ?>" alt="<?php echo esc_attr( $event['title'] ); ?>">
+										</div>
+									<?php endif; ?>
+
+									<div class="kh-highlight-card__content">
+										<time class="kh-highlight-card__date">
+											<?php echo esc_html( strtoupper( wp_date( 'D, d. M', strtotime( $event['start_date'] ) ) ) ); ?>
+										</time>
+										
+										<h3 class="kh-highlight-card__title"><?php echo esc_html( $event['title'] ); ?></h3>
+									</div>
+								</a>
+							</article>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			<?php endforeach; ?>
+
+			<?php if ( $query->max_num_pages > 1 ) : ?>
+				<div class="kh-events-pagination">
+					<?php
+					echo paginate_links(
+						array(
+							'total'     => $query->max_num_pages,
+							'current'   => $paged,
+							'prev_text' => __( '&laquo; Zurück', 'kulturhaus-events' ),
+							'next_text' => __( 'Weiter &raquo;', 'kulturhaus-events' ),
+							'type'      => 'list',
+						)
+					);
+					?>
+				</div>
+			<?php endif; ?>
+		</div>
+		<?php
+
 		return ob_get_clean();
 	}
 }

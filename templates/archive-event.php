@@ -31,7 +31,7 @@ get_header();
 				the_post();
 
 				$start_date = get_post_meta( get_the_ID(), '_kh_event_start_date', true );
-				$date_format = 'D, d. MMM';
+				$date_format = 'D, d. M';
 				?>
 
 				<article class="kh-highlight-card">
