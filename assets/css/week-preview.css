@@ -1,0 +1,183 @@
+/**
+ * Week Preview Widget Styles
+ * Timeline-Design für Events der aktuellen Woche
+ */
+
+.kh-week-preview {
+	max-width: 1400px;
+	margin: 0 auto 40px;
+	padding: 40px 20px;
+}
+
+/* Titel */
+.kh-week-preview__title {
+	font-size: 28px;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: #000;
+	margin: 0 0 30px 0;
+	letter-spacing: 0.5px;
+	padding-bottom: 16px;
+	border-bottom: 4px solid #dc143c;
+}
+
+/* Timeline Container */
+.kh-week-timeline {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 16px;
+}
+
+/* Einzelner Tag */
+.kh-week-day {
+	background: #fff;
+	border-radius: 16px;
+	padding: 20px 16px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	min-height: 200px;
+	position: relative;
+}
+
+.kh-week-day::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 4px;
+	background: #e0e0e0;
+	border-radius: 16px 16px 0 0;
+}
+
+/* Heutiger Tag Highlight */
+.kh-week-day--today::before {
+	background: #dc143c;
+}
+
+.kh-week-day--today .kh-week-day__header {
+	color: #dc143c;
+}
+
+/* Tag mit Events */
+.kh-week-day--has-events::before {
+	background: #ffc107;
+}
+
+/* Tag Header */
+.kh-week-day__header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	padding-bottom: 12px;
+	border-bottom: 2px solid #f0f0f0;
+}
+
+.kh-week-day__name {
+	font-size: 14px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: #000;
+}
+
+.kh-week-day__date {
+	font-size: 12px;
+	font-weight: 600;
+	color: #666;
+}
+
+/* Events Liste */
+.kh-week-day__events {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex: 1;
+}
+
+/* Einzelnes Event */
+.kh-week-event {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 12px;
+	background: #f9f9f9;
+	border-radius: 8px;
+	text-decoration: none;
+	color: inherit;
+	border-left: 3px solid #dc143c;
+}
+
+.kh-week-event:hover {
+	background: #f0f0f0;
+	transform: translateX(2px);
+}
+
+.kh-week-event__time {
+	font-size: 11px;
+	font-weight: 700;
+	color: #dc143c;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.kh-week-event__title {
+	font-size: 13px;
+	font-weight: 600;
+	color: #000;
+	line-height: 1.3;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* Leerer Tag */
+.kh-week-day__empty {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0.3;
+}
+
+.kh-week-day__empty svg {
+	color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+	.kh-week-timeline {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.kh-week-timeline {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 12px;
+	}
+
+	.kh-week-day {
+		padding: 16px 12px;
+		min-height: 160px;
+	}
+
+	.kh-week-preview__title {
+		font-size: 24px;
+	}
+}
+
+@media (max-width: 480px) {
+	.kh-week-timeline {
+		grid-template-columns: 1fr;
+	}
+
+	.kh-week-day {
+		min-height: auto;
+	}
+}

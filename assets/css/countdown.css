@@ -1,0 +1,210 @@
+/**
+ * Event Countdown Widget Styles
+ * Zeigt nächstes Event mit Live-Countdown
+ */
+
+.kh-event-countdown {
+	position: relative;
+	min-height: 500px;
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	margin-bottom: 40px;
+}
+
+/* Hintergrundbild */
+.kh-countdown-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.kh-countdown-background img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Overlay für bessere Lesbarkeit */
+.kh-countdown-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(220, 20, 60, 0.6) 100%);
+	z-index: 2;
+}
+
+/* Content Container */
+.kh-countdown-content {
+	position: relative;
+	z-index: 3;
+	padding: 60px 40px;
+	color: #fff;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 24px;
+}
+
+/* Kategorie Badge */
+.kh-countdown-category {
+	display: inline-block;
+	padding: 6px 16px;
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 20px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	backdrop-filter: blur(10px);
+}
+
+/* Event Titel */
+.kh-countdown-title {
+	font-size: 48px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin: 0;
+	line-height: 1.2;
+	max-width: 800px;
+}
+
+/* Meta Infos (Datum & Ort) */
+.kh-countdown-meta {
+	display: flex;
+	gap: 32px;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.kh-countdown-date,
+.kh-countdown-venue {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.kh-countdown-date svg,
+.kh-countdown-venue svg {
+	opacity: 0.8;
+}
+
+/* Countdown Timer */
+.kh-countdown-timer {
+	display: flex;
+	gap: 24px;
+	margin: 20px 0;
+}
+
+.kh-countdown-unit {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	min-width: 100px;
+	padding: 20px;
+	background: rgba(255, 255, 255, 0.15);
+	border-radius: 12px;
+	backdrop-filter: blur(10px);
+	border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.kh-countdown-value {
+	font-size: 48px;
+	font-weight: 900;
+	line-height: 1;
+	color: #fff;
+}
+
+.kh-countdown-label {
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	opacity: 0.9;
+}
+
+/* CTA Button */
+.kh-countdown-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	padding: 16px 40px;
+	background: #fff;
+	color: #dc143c;
+	font-size: 16px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	text-decoration: none;
+	border-radius: 4px;
+	margin-top: 20px;
+}
+
+.kh-countdown-button:hover {
+	background: #f5f5f5;
+	color: #b91c1c;
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.kh-countdown-button svg {
+	transition: transform 0.2s;
+}
+
+.kh-countdown-button:hover svg {
+	transform: translateX(4px);
+}
+
+/* Empty State */
+.kh-countdown-empty {
+	text-align: center;
+	padding: 60px 20px;
+	color: #666;
+	font-size: 16px;
+	background: #f9f9f9;
+	border-radius: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.kh-countdown-content {
+		padding: 40px 20px;
+	}
+
+	.kh-countdown-title {
+		font-size: 32px;
+	}
+
+	.kh-countdown-timer {
+		gap: 12px;
+	}
+
+	.kh-countdown-unit {
+		min-width: 70px;
+		padding: 12px;
+	}
+
+	.kh-countdown-value {
+		font-size: 32px;
+	}
+
+	.kh-countdown-label {
+		font-size: 10px;
+	}
+
+	.kh-countdown-meta {
+		gap: 16px;
+		font-size: 14px;
+	}
+}

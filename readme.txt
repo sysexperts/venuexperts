@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.23.2
+Stable tag: 1.24.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,14 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.24.0 =
+* **FEATURE:** Neuer Shortcode `[kh_event_countdown]` - Event-Countdown mit Live-Timer
+* **FEATURE:** Neuer Shortcode `[kh_week_preview]` - Wochenübersicht im Timeline-Design
+* **DESIGN:** Event-Countdown als Hero-Widget mit Hintergrundbild und animiertem Timer
+* **DESIGN:** Wochenübersicht zeigt alle Events Mo-So in kompaktem Grid-Layout
+* **UX:** Live-Countdown aktualisiert sich jede Sekunde automatisch
+* **UX:** Heutiger Tag wird in Wochenübersicht hervorgehoben
 
 = 1.23.2 =
 * **FEATURE:** Dezentes Schwanen-Wasserzeichen als Hintergrundbild hinzugefügt

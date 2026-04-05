@@ -242,6 +242,32 @@ class KH_Plugin {
 			'all'
 		);
 
+		// Countdown CSS & JS immer laden (für Countdown-Shortcode)
+		wp_enqueue_style(
+			'kh-events-countdown',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/countdown.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
+		wp_enqueue_script(
+			'kh-events-countdown',
+			KH_EVENTS_PLUGIN_URL . 'assets/js/countdown.js',
+			array( 'jquery' ),
+			KH_EVENTS_VERSION,
+			true
+		);
+
+		// Week Preview CSS immer laden (für Wochenübersicht-Shortcode)
+		wp_enqueue_style(
+			'kh-events-week-preview',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/week-preview.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
 		// Program JS für Filter
 		wp_enqueue_script(
 			'kh-events-program',

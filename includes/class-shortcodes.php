@@ -29,6 +29,8 @@ class KH_Shortcodes {
 		add_shortcode( 'kh_event_program', array( $this, 'event_program' ) );
 		add_shortcode( 'kh_event_calendar', array( $this, 'event_calendar' ) );
 		add_shortcode( 'kh_event_search', array( $this, 'event_search' ) );
+		add_shortcode( 'kh_event_countdown', array( $this, 'event_countdown' ) );
+		add_shortcode( 'kh_week_preview', array( $this, 'week_preview' ) );
 	}
 
 	/**
@@ -1293,6 +1295,297 @@ class KH_Shortcodes {
 					<?php
 				endif;
 				?>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Shortcode: [kh_event_countdown]
+	 *
+	 * Zeigt das nächste große Event mit Live-Countdown.
+	 *
+	 * Attribute:
+	 * - event_id: Spezifische Event-ID (optional, sonst nächstes Featured Event)
+	 * - show_button: true/false - CTA-Button anzeigen (Standard: true)
+	 * - button_text: Text für CTA-Button (Standard: "Tickets sichern")
+	 *
+	 * @param array<string, mixed> $atts Shortcode-Attribute.
+	 * @return string HTML-Ausgabe.
+	 */
+	public function event_countdown( $atts ): string {
+		$atts = shortcode_atts(
+			array(
+				'event_id'    => '',
+				'show_button' => 'true',
+				'button_text' => 'Tickets sichern',
+			),
+			$atts,
+			'kh_event_countdown'
+		);
+
+		$event_id = $atts['event_id'];
+
+		// Wenn keine Event-ID angegeben, nächstes Featured Event holen
+		if ( empty( $event_id ) ) {
+			$args = array(
+				'post_type'      => 'kh_event',
+				'posts_per_page' => 1,
+				'meta_key'       => '_kh_event_start_date',
+				'orderby'        => 'meta_value',
+				'order'          => 'ASC',
+				'meta_query'     => array(
+					'relation' => 'AND',
+					array(
+						'key'     => '_kh_event_start_date',
+						'value'   => current_time( 'Y-m-d H:i:s' ),
+						'compare' => '>=',
+						'type'    => 'DATETIME',
+					),
+					array(
+						'key'   => '_kh_event_featured',
+						'value' => '1',
+					),
+				),
+			);
+
+			$query = new WP_Query( $args );
+
+			if ( ! $query->have_posts() ) {
+				// Fallback: Nächstes Event (auch ohne Featured)
+				$args['meta_query'] = array(
+					array(
+						'key'     => '_kh_event_start_date',
+						'value'   => current_time( 'Y-m-d H:i:s' ),
+						'compare' => '>=',
+						'type'    => 'DATETIME',
+					),
+				);
+				$query = new WP_Query( $args );
+			}
+
+			if ( ! $query->have_posts() ) {
+				return '<div class="kh-countdown-empty">Keine kommenden Events verfügbar.</div>';
+			}
+
+			$query->the_post();
+			$event_id = get_the_ID();
+			wp_reset_postdata();
+		}
+
+		// Event-Daten laden
+		$event      = get_post( $event_id );
+		$start_date = get_post_meta( $event_id, '_kh_event_start_date', true );
+		$venue_id   = get_post_meta( $event_id, '_kh_event_venue', true );
+		$venue_name = $venue_id ? get_the_title( $venue_id ) : '';
+		$categories = wp_get_post_terms( $event_id, 'kh_event_category' );
+		$category   = ! empty( $categories ) ? $categories[0]->name : '';
+
+		ob_start();
+		?>
+		<div class="kh-event-countdown" data-event-date="<?php echo esc_attr( $start_date ); ?>">
+			<?php if ( has_post_thumbnail( $event_id ) ) : ?>
+				<div class="kh-countdown-background">
+					<?php echo get_the_post_thumbnail( $event_id, 'large' ); ?>
+				</div>
+			<?php endif; ?>
+			
+			<div class="kh-countdown-overlay"></div>
+			
+			<div class="kh-countdown-content">
+				<?php if ( $category ) : ?>
+					<div class="kh-countdown-category"><?php echo esc_html( $category ); ?></div>
+				<?php endif; ?>
+				
+				<h2 class="kh-countdown-title"><?php echo esc_html( $event->post_title ); ?></h2>
+				
+				<div class="kh-countdown-meta">
+					<div class="kh-countdown-date">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+							<line x1="16" y1="2" x2="16" y2="6"></line>
+							<line x1="8" y1="2" x2="8" y2="6"></line>
+							<line x1="3" y1="10" x2="21" y2="10"></line>
+						</svg>
+						<?php echo esc_html( wp_date( 'd.m.Y, H:i', strtotime( $start_date ) ) ); ?> Uhr
+					</div>
+					<?php if ( $venue_name ) : ?>
+						<div class="kh-countdown-venue">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+								<circle cx="12" cy="10" r="3"></circle>
+							</svg>
+							<?php echo esc_html( $venue_name ); ?>
+						</div>
+					<?php endif; ?>
+				</div>
+				
+				<div class="kh-countdown-timer">
+					<div class="kh-countdown-unit">
+						<span class="kh-countdown-value" data-unit="days">0</span>
+						<span class="kh-countdown-label">Tage</span>
+					</div>
+					<div class="kh-countdown-unit">
+						<span class="kh-countdown-value" data-unit="hours">0</span>
+						<span class="kh-countdown-label">Stunden</span>
+					</div>
+					<div class="kh-countdown-unit">
+						<span class="kh-countdown-value" data-unit="minutes">0</span>
+						<span class="kh-countdown-label">Minuten</span>
+					</div>
+					<div class="kh-countdown-unit">
+						<span class="kh-countdown-value" data-unit="seconds">0</span>
+						<span class="kh-countdown-label">Sekunden</span>
+					</div>
+				</div>
+				
+				<?php if ( $atts['show_button'] === 'true' ) : ?>
+					<a href="<?php echo esc_url( get_permalink( $event_id ) ); ?>" class="kh-countdown-button">
+						<?php echo esc_html( $atts['button_text'] ); ?>
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<line x1="5" y1="12" x2="19" y2="12"></line>
+							<polyline points="12 5 19 12 12 19"></polyline>
+						</svg>
+					</a>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Shortcode: [kh_week_preview]
+	 *
+	 * Zeigt Events der aktuellen Woche in Timeline-Format.
+	 *
+	 * Attribute:
+	 * - title: Überschrift (Standard: "Diese Woche im Schwanen")
+	 *
+	 * @param array<string, mixed> $atts Shortcode-Attribute.
+	 * @return string HTML-Ausgabe.
+	 */
+	public function week_preview( $atts ): string {
+		$atts = shortcode_atts(
+			array(
+				'title' => 'Diese Woche im Schwanen',
+			),
+			$atts,
+			'kh_week_preview'
+		);
+
+		// Wochenstart (Montag) und Wochenende (Sonntag)
+		$week_start = strtotime( 'monday this week' );
+		$week_end   = strtotime( 'sunday this week 23:59:59' );
+
+		// Events der Woche holen
+		$args = array(
+			'post_type'      => 'kh_event',
+			'posts_per_page' => -1,
+			'meta_key'       => '_kh_event_start_date',
+			'orderby'        => 'meta_value',
+			'order'          => 'ASC',
+			'meta_query'     => array(
+				'relation' => 'AND',
+				array(
+					'key'     => '_kh_event_start_date',
+					'value'   => gmdate( 'Y-m-d H:i:s', $week_start ),
+					'compare' => '>=',
+					'type'    => 'DATETIME',
+				),
+				array(
+					'key'     => '_kh_event_start_date',
+					'value'   => gmdate( 'Y-m-d H:i:s', $week_end ),
+					'compare' => '<=',
+					'type'    => 'DATETIME',
+				),
+			),
+		);
+
+		$query = new WP_Query( $args );
+
+		// Events nach Wochentag gruppieren
+		$events_by_day = array();
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$start_date = get_post_meta( get_the_ID(), '_kh_event_start_date', true );
+				$day_key    = gmdate( 'N', strtotime( $start_date ) ); // 1=Mo, 7=So
+				
+				if ( ! isset( $events_by_day[ $day_key ] ) ) {
+					$events_by_day[ $day_key ] = array();
+				}
+				
+				$events_by_day[ $day_key ][] = array(
+					'id'         => get_the_ID(),
+					'title'      => get_the_title(),
+					'start_date' => $start_date,
+					'permalink'  => get_permalink(),
+				);
+			}
+			wp_reset_postdata();
+		}
+
+		$weekdays = array(
+			1 => 'Montag',
+			2 => 'Dienstag',
+			3 => 'Mittwoch',
+			4 => 'Donnerstag',
+			5 => 'Freitag',
+			6 => 'Samstag',
+			7 => 'Sonntag',
+		);
+
+		ob_start();
+		?>
+		<div class="kh-week-preview">
+			<h2 class="kh-week-preview__title"><?php echo esc_html( $atts['title'] ); ?></h2>
+			
+			<div class="kh-week-timeline">
+				<?php foreach ( $weekdays as $day_num => $day_name ) : ?>
+					<?php
+					$day_date      = strtotime( "monday this week +{$day_num} days -1 day" );
+					$is_today      = gmdate( 'Y-m-d', $day_date ) === gmdate( 'Y-m-d' );
+					$has_events    = isset( $events_by_day[ $day_num ] );
+					$day_classes   = array( 'kh-week-day' );
+					if ( $is_today ) {
+						$day_classes[] = 'kh-week-day--today';
+					}
+					if ( $has_events ) {
+						$day_classes[] = 'kh-week-day--has-events';
+					}
+					?>
+					<div class="<?php echo esc_attr( implode( ' ', $day_classes ) ); ?>">
+						<div class="kh-week-day__header">
+							<span class="kh-week-day__name"><?php echo esc_html( substr( $day_name, 0, 2 ) ); ?></span>
+							<span class="kh-week-day__date"><?php echo esc_html( gmdate( 'd.m', $day_date ) ); ?></span>
+						</div>
+						
+						<?php if ( $has_events ) : ?>
+							<div class="kh-week-day__events">
+								<?php foreach ( $events_by_day[ $day_num ] as $event ) : ?>
+									<a href="<?php echo esc_url( $event['permalink'] ); ?>" class="kh-week-event">
+										<span class="kh-week-event__time">
+											<?php echo esc_html( gmdate( 'H:i', strtotime( $event['start_date'] ) ) ); ?>
+										</span>
+										<span class="kh-week-event__title">
+											<?php echo esc_html( $event['title'] ); ?>
+										</span>
+									</a>
+								<?php endforeach; ?>
+							</div>
+						<?php else : ?>
+							<div class="kh-week-day__empty">
+								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<circle cx="12" cy="12" r="10"></circle>
+									<line x1="15" y1="9" x2="9" y2="15"></line>
+									<line x1="9" y1="9" x2="15" y2="15"></line>
+								</svg>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endforeach; ?>
 			</div>
 		</div>
 		<?php
