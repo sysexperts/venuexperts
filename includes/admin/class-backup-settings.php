@@ -265,31 +265,37 @@ class KH_Backup_Settings {
 						</table>
 					</div>
 
-					<!-- Manual Backup -->
-					<div class="kh-backup-section">
-						<h2><?php esc_html_e( 'Manuelles Backup', 'kulturhaus-events' ); ?></h2>
-						
-						<?php
-						// Backup erstellen, wenn Formular gesendet
-						if ( isset( $_POST['kh_create_backup'] ) && check_admin_referer( 'kh_backup_nonce' ) ) {
-							$result = KH_Backup_Manager::create_backup( KH_Backup_Manager::BACKUP_FULL );
-							$class = $result['success'] ? 'notice-success' : 'notice-error';
-							echo '<div class="notice ' . $class . ' inline"><p>' . esc_html( $result['message'] ) . '</p></div>';
-						}
-						?>
-						
-						<form method="post" action="">
-							<?php wp_nonce_field( 'kh_backup_nonce' ); ?>
-							<input type="hidden" name="kh_create_backup" value="1">
-							<button type="submit" class="button button-primary">
-								<?php esc_html_e( 'Jetzt Backup erstellen', 'kulturhaus-events' ); ?>
-							</button>
-						</form>
 					</div>
-				</div>
 
 				<?php submit_button(); ?>
 			</form>
+
+			<!-- Manual Backup - Separates Formular -->
+			<div class="kh-backup-section" style="margin-top: 20px;">
+				<h2><?php esc_html_e( 'Manuelles Backup', 'kulturhaus-events' ); ?></h2>
+				
+				<?php
+				// Backup erstellen, wenn Formular gesendet
+				if ( isset( $_POST['kh_create_backup'] ) && check_admin_referer( 'kh_backup_create_nonce' ) ) {
+					$result = KH_Backup_Manager::create_backup( KH_Backup_Manager::BACKUP_FULL );
+					$class = $result['success'] ? 'notice-success' : 'notice-error';
+					echo '<div class="notice ' . $class . ' inline"><p>' . esc_html( $result['message'] ) . '</p></div>';
+				}
+				?>
+				
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=kh-events-backup' ) ); ?>">
+					<?php wp_nonce_field( 'kh_backup_create_nonce' ); ?>
+					<input type="hidden" name="kh_create_backup" value="1">
+					<p>
+						<button type="submit" class="button button-primary">
+							<?php esc_html_e( 'Jetzt Backup erstellen', 'kulturhaus-events' ); ?>
+						</button>
+					</p>
+					<p class="description">
+						<?php esc_html_e( 'Erstellt ein vollständiges Backup aller Events und Einstellungen.', 'kulturhaus-events' ); ?>
+					</p>
+				</form>
+			</div>
 		</div>
 
 		<style>
