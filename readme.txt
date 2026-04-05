@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.24.1
+Stable tag: 1.24.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,11 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.24.2 =
+* **FIX:** Schwanen-Wasserzeichen jetzt sichtbar - doppelte Opacity entfernt
+* **FIX:** Wasserzeichen auf 0.08 Opacity erhöht (vorher quasi unsichtbar)
+* **FIX:** Wasserzeichen jetzt auch auf Countdown und Week-Preview Widgets
 
 = 1.24.1 =
 * **FIX:** Event-Countdown Shortcode - bessere Fehlerbehandlung und Validierung hinzugefügt

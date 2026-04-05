@@ -1,57 +1,42 @@
 /**
  * Dezentes Schwanen-Wasserzeichen Hintergrundbild
- * Wird auf der gesamten Seite angezeigt
+ * Wird auf allen Shortcode-Bereichen angezeigt
  */
 
-body.kh-events-page {
-	position: relative;
-}
-
-body.kh-events-page::before {
-	content: '';
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 800px;
-	height: 800px;
-	background-image: url('../images/swan-watermark.svg');
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: contain;
-	opacity: 0.4;
-	pointer-events: none;
-	z-index: -1;
-}
-
-/* Alternative: Für alle Seiten mit Plugin-Inhalten */
+/* Wasserzeichen für alle Event-Widgets */
 .kh-event-program,
 .kh-event-highlights,
-.kh-calendar-widget {
+.kh-week-preview,
+.kh-event-countdown {
 	position: relative;
+	overflow: visible;
 }
 
 .kh-event-program::before,
-.kh-event-highlights::before {
+.kh-event-highlights::before,
+.kh-week-preview::before,
+.kh-event-countdown::before {
 	content: '';
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 600px;
-	height: 600px;
+	width: 500px;
+	height: 500px;
 	background-image: url('../images/swan-watermark.svg');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: contain;
-	opacity: 0.03;
+	opacity: 0.08;
 	pointer-events: none;
 	z-index: 0;
 }
 
 /* Sicherstellen dass Content über Wasserzeichen liegt */
 .kh-event-program > *,
-.kh-event-highlights > * {
+.kh-event-highlights > *,
+.kh-week-preview > *,
+.kh-event-countdown > * {
 	position: relative;
 	z-index: 1;
 }
