@@ -259,6 +259,15 @@ class KH_Plugin {
 			'all'
 		);
 
+		// Archive CSS immer laden (für Archive-Shortcode)
+		wp_enqueue_style(
+			'kh-events-archive',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/archive.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
 		// Program JS für Filter
 		wp_enqueue_script(
 			'kh-events-program',
@@ -314,17 +323,6 @@ class KH_Plugin {
 				'nonce'   => wp_create_nonce( 'kh_search_nonce' ),
 			)
 		);
-
-		// Archive CSS auf Event-Archiv-Seiten
-		if ( is_post_type_archive( 'kh_event' ) ) {
-			wp_enqueue_style(
-				'kh-events-archive',
-				KH_EVENTS_PLUGIN_URL . 'assets/css/archive.css',
-				array(),
-				KH_EVENTS_VERSION,
-				'all'
-			);
-		}
 
 		// Andere CSS nur auf Event-Seiten
 		if ( ! is_singular( 'kh_event' ) && ! is_post_type_archive( 'kh_event' ) ) {
