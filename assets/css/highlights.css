@@ -63,11 +63,28 @@
 	font-weight: 900;
 	line-height: 0.85;
 	margin: 0 0 24px 0;
-	color: #000;
+	background: linear-gradient(135deg, #dc143c 0%, #ff1744 50%, #b91c1c 100%);
+	background-size: 200% 200%;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
 	text-transform: uppercase;
 	letter-spacing: -0.04em;
 	position: relative;
 	display: inline-block;
+	animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 /* Gelber Highlight-Balken entfernt - User möchte keinen Durchstrich */
@@ -335,5 +352,11 @@
 
 	.kh-highlight-card:hover {
 		transform: none;
+	}
+
+	.kh-highlights-text__title {
+		animation: none;
+		background: linear-gradient(135deg, #dc143c 0%, #ff1744 50%, #b91c1c 100%);
+		background-size: 100% 100%;
 	}
 }

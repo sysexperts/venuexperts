@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.24.3
+Stable tag: 1.24.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,11 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.24.4 =
+* **DESIGN:** Highlights-Titel mit rotem Gradient-Effekt (3 Rottöne: #dc143c, #ff1744, #b91c1c)
+* **ANIMATION:** Subtile Gradient-Animation (8s Loop) für lebendigen Look
+* **A11Y:** Animation deaktiviert für Nutzer mit prefers-reduced-motion
 
 = 1.24.3 =
 * **CHANGE:** Wasserzeichen-Hintergrund deaktiviert (CSS nicht mehr geladen)
