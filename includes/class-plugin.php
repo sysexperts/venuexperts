@@ -233,6 +233,15 @@ class KH_Plugin {
 			'all'
 		);
 
+		// Watermark CSS immer laden (dezentes Schwanen-Hintergrundbild)
+		wp_enqueue_style(
+			'kh-events-watermark',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/watermark.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
 		// Program JS für Filter
 		wp_enqueue_script(
 			'kh-events-program',

@@ -1,0 +1,57 @@
+/**
+ * Dezentes Schwanen-Wasserzeichen Hintergrundbild
+ * Wird auf der gesamten Seite angezeigt
+ */
+
+body.kh-events-page {
+	position: relative;
+}
+
+body.kh-events-page::before {
+	content: '';
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 800px;
+	height: 800px;
+	background-image: url('../images/swan-watermark.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	opacity: 0.4;
+	pointer-events: none;
+	z-index: -1;
+}
+
+/* Alternative: Für alle Seiten mit Plugin-Inhalten */
+.kh-event-program,
+.kh-event-highlights,
+.kh-calendar-widget {
+	position: relative;
+}
+
+.kh-event-program::before,
+.kh-event-highlights::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 600px;
+	height: 600px;
+	background-image: url('../images/swan-watermark.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	opacity: 0.03;
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* Sicherstellen dass Content über Wasserzeichen liegt */
+.kh-event-program > *,
+.kh-event-highlights > * {
+	position: relative;
+	z-index: 1;
+}
