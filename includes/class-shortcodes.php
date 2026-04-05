@@ -1615,7 +1615,8 @@ class KH_Shortcodes {
 	public function event_archive( $atts ): string {
 		$atts = shortcode_atts(
 			array(
-				'per_page' => 12,
+				'per_page' => 32,
+				'title'    => 'Veranstaltungen',
 			),
 			$atts,
 			'kh_event_archive'
@@ -1685,6 +1686,12 @@ class KH_Shortcodes {
 		ob_start();
 		?>
 		<div class="kh-events-archive">
+			<?php if ( ! empty( $atts['title'] ) ) : ?>
+				<header class="kh-events-archive__header">
+					<h1 class="kh-events-archive__title"><?php echo esc_html( $atts['title'] ); ?></h1>
+				</header>
+			<?php endif; ?>
+			
 			<?php foreach ( $events_by_month as $month_data ) : ?>
 				<div class="kh-events-month-group">
 					<h2 class="kh-events-month-header"><?php echo esc_html( strtoupper( $month_data['month_name'] ) ); ?></h2>

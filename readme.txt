@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.25.1
+Stable tag: 1.25.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,11 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.25.2 =
+* **CHANGE:** Events pro Seite von 12 auf 32 erhöht
+* **FEATURE:** Optionaler Title-Parameter für Archive-Shortcode
+* **FIX:** Pagination-Zentrierung verbessert (width: 100%, align-items)
 
 = 1.25.1 =
 * **CHANGE:** Grid auf 4 Spalten geändert (mehr Events sichtbar)
