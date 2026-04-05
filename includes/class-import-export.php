@@ -364,10 +364,62 @@ class KH_Import_Export {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$attachment_id = media_sideload_image( $image_url, $post_id, null, 'id' );
-		
-		if ( ! is_wp_error( $attachment_id ) ) {
-			set_post_thumbnail( $post_id, $attachment_id );
+		$temp_file = download_url( $image_url, 30 );
+
+		if ( is_wp_error( $temp_file ) ) {
+			return;
 		}
+
+		$file_name = $this->build_image_filename( $image_url, $temp_file );
+		$file_array = array(
+			'name'     => $file_name,
+			'tmp_name' => $temp_file,
+		);
+
+		$attachment_id = media_handle_sideload( $file_array, $post_id );
+
+		if ( is_wp_error( $attachment_id ) ) {
+			@unlink( $temp_file );
+			return;
+		}
+
+		set_post_thumbnail( $post_id, (int) $attachment_id );
+	}
+
+	/**
+	 * Erstellt einen stabilen Dateinamen für Bildimporte.
+	 *
+	 * @param string $image_url Bild-URL aus CSV.
+	 * @param string $temp_file Lokale temporäre Datei.
+	 * @return string
+	 */
+	private function build_image_filename( string $image_url, string $temp_file ): string {
+		$path = wp_parse_url( $image_url, PHP_URL_PATH );
+		$base_name = is_string( $path ) ? basename( $path ) : '';
+
+		$name_without_ext = sanitize_title( pathinfo( $base_name, PATHINFO_FILENAME ) );
+		if ( '' === $name_without_ext ) {
+			$name_without_ext = 'event-image-' . gmdate( 'YmdHis' );
+		}
+
+		$extension = strtolower( (string) pathinfo( $base_name, PATHINFO_EXTENSION ) );
+
+		if ( '' === $extension ) {
+			$mime_type = wp_get_image_mime( $temp_file );
+			$mime_to_ext = array(
+				'image/jpeg' => 'jpg',
+				'image/png'  => 'png',
+				'image/gif'  => 'gif',
+				'image/webp' => 'webp',
+			);
+
+			if ( is_string( $mime_type ) && isset( $mime_to_ext[ $mime_type ] ) ) {
+				$extension = $mime_to_ext[ $mime_type ];
+			} else {
+				$extension = 'jpg';
+			}
+		}
+
+		return $name_without_ext . '.' . $extension;
 	}
 }

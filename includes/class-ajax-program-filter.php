@@ -36,12 +36,13 @@ class KH_Ajax_Program_Filter {
 		$category = isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
 		$timeframe = isset( $_POST['timeframe'] ) ? sanitize_text_field( wp_unslash( $_POST['timeframe'] ) ) : 'upcoming';
 		$limit = isset( $_POST['limit'] ) ? absint( $_POST['limit'] ) : 5;
-		$show_all_link = isset( $_POST['show_all_link'] ) && $_POST['show_all_link'] === 'true';
+		$show_all_link = isset( $_POST['show_all_link'] )
+			&& in_array( strtolower( (string) wp_unslash( $_POST['show_all_link'] ) ), array( '1', 'true', 'yes' ), true );
 		$all_link_url = isset( $_POST['all_link_url'] ) ? esc_url_raw( wp_unslash( $_POST['all_link_url'] ) ) : '/veranstaltungen/';
 
 		// Query Args
 		$args = array(
-			'post_type'      => 'event',
+			'post_type'      => KH_Event::POST_TYPE,
 			'posts_per_page' => $limit,
 			'post_status'    => 'publish',
 			'meta_key'       => '_kh_event_start_date',

@@ -32,19 +32,19 @@ function khNavigateMonth(direction) {
 	'use strict';
 
 	class ProgramFilter {
-		constructor() {
-			this.$container = $('.kh-event-program');
-			if (this.$container.length === 0) return;
+		constructor($container) {
+			this.$container = $container;
+			if (!this.$container || this.$container.length === 0) return;
 
-			this.$searchInput = $('#kh-program-search');
-			this.$categorySelect = $('#kh-program-category');
-			this.$timeframeSelect = $('#kh-program-timeframe');
-			this.$resetBtn = $('#kh-program-filter-reset');
-			this.$eventsList = $('#kh-program-events-list');
-			this.$resultsCount = $('#kh-program-results-count');
+			this.$searchInput = this.$container.find('#kh-program-search');
+			this.$categorySelect = this.$container.find('#kh-program-category');
+			this.$timeframeSelect = this.$container.find('#kh-program-timeframe');
+			this.$resetBtn = this.$container.find('#kh-program-filter-reset');
+			this.$eventsList = this.$container.find('#kh-program-events-list');
+			this.$resultsCount = this.$container.find('#kh-program-results-count');
 
-			this.limit = this.$container.data('limit') || 5;
-			this.showAllLink = this.$container.data('show-all-link') === 1;
+			this.limit = parseInt(this.$container.data('limit'), 10) || 5;
+			this.showAllLink = String(this.$container.data('show-all-link')) === '1';
 			this.allLinkUrl = this.$container.data('all-link-url') || '/veranstaltungen/';
 			
 			this.searchTimeout = null;
@@ -68,6 +68,10 @@ function khNavigateMonth(direction) {
 		}
 
 		applyFilters() {
+			if (typeof khProgramData === 'undefined' || !khProgramData.ajaxUrl || !khProgramData.nonce) {
+				return;
+			}
+
 			const search = this.$searchInput.val();
 			const category = this.$categorySelect.val();
 			const timeframe = this.$timeframeSelect.val();
@@ -113,7 +117,9 @@ function khNavigateMonth(direction) {
 
 	// Initialize
 	$(document).ready(function() {
-		new ProgramFilter();
+		$('.kh-event-program').each(function() {
+			new ProgramFilter($(this));
+		});
 	});
 
 })(jQuery);

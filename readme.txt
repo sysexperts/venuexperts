@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.22.0
+Stable tag: 1.22.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,15 +23,12 @@ Kulturhaus Events ist ein WordPress-Plugin zur Verwaltung von Veranstaltungen, s
 * Listenansicht und Einzelansicht
 * **Shortcodes** für flexible Event-Anzeige
 * **iCal/ICS-Export** - Events zum Kalender hinzufügen
+* **CSV Import/Export** - Events importieren und exportieren
 * **Filter-Widget** - Nach Datum und Kategorie filtern
 * **Kommende Events Widget** - Sidebar-Integration
 * DSGVO-konform (keine externen Dienste)
 * Barrierefrei nach BITV 2.0 / WCAG 2.1 AA
-* Vollständig auf Deutsch
-
-**Sicherheitsfeatures:**
-
-* Nonce-Verifizierung bei allen Formularen
+* Vollständig auf Deutsch bei allen Formularen
 * Capability-Checks für Berechtigungen
 * Input Sanitization und Output Escaping
 * Prepared Statements für Datenbankabfragen
@@ -126,6 +123,18 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.22.2 =
+* **ENTFERNT:** Backup & Restore final vollständig aus dem Plugin entfernt
+* Entfernte Klassen: `class-backup-page.php`, `class-backup-manager.php`, `class-restore-manager.php`
+* **BUGFIX:** CSV-Import setzt Featured Images wieder zuverlässig (auch bei URLs ohne Dateiendung, z. B. Unsplash)
+* Verbesserte Bildverarbeitung im Import über Download + `media_handle_sideload()`
+
+= 1.22.1 =
+* **BUGFIX:** Suchfeld im `[kh_event_program]` Filter funktioniert wieder zuverlässig
+* **BUGFIX:** AJAX-Filter nutzt jetzt den korrekten Post Type (`kh_event`)
+* **BUGFIX:** Verbesserte Initialisierung bei mehreren `[kh_event_program]` Instanzen auf einer Seite
+* **DESIGN:** Filterleiste visuell an Kartenstil des Program-Widgets angeglichen (Accent-Bar, Border, Input-States)
 
 = 1.22.0 =
 * **ENTFERNT:** Backup-Funktion komplett entfernt
