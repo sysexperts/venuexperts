@@ -1375,12 +1375,23 @@ class KH_Shortcodes {
 		}
 
 		// Event-Daten laden
-		$event      = get_post( $event_id );
+		$event = get_post( $event_id );
+		
+		// Validierung
+		if ( ! $event || $event->post_type !== 'kh_event' ) {
+			return '<div class="kh-countdown-empty">Event nicht gefunden.</div>';
+		}
+		
 		$start_date = get_post_meta( $event_id, '_kh_event_start_date', true );
+		
+		if ( empty( $start_date ) ) {
+			return '<div class="kh-countdown-empty">Event hat kein Startdatum.</div>';
+		}
+		
 		$venue_id   = get_post_meta( $event_id, '_kh_event_venue', true );
 		$venue_name = $venue_id ? get_the_title( $venue_id ) : '';
 		$categories = wp_get_post_terms( $event_id, 'kh_event_category' );
-		$category   = ! empty( $categories ) ? $categories[0]->name : '';
+		$category   = ! empty( $categories ) && ! is_wp_error( $categories ) ? $categories[0]->name : '';
 
 		ob_start();
 		?>
