@@ -275,17 +275,17 @@ class KH_Backup_Settings {
 				<h2><?php esc_html_e( 'Manuelles Backup', 'kulturhaus-events' ); ?></h2>
 				
 				<?php
-				// Backup erstellen, wenn Formular gesendet
-				if ( isset( $_POST['kh_create_backup'] ) && check_admin_referer( 'kh_backup_create_nonce' ) ) {
-					$result = KH_Backup_Manager::create_backup( KH_Backup_Manager::BACKUP_FULL );
-					$class = $result['success'] ? 'notice-success' : 'notice-error';
-					echo '<div class="notice ' . $class . ' inline"><p>' . esc_html( $result['message'] ) . '</p></div>';
+				// Erfolgsmeldung anzeigen, wenn vorhanden
+				if ( isset( $_GET['backup_created'] ) && $_GET['backup_created'] === '1' ) {
+					echo '<div class="notice notice-success inline"><p>' . esc_html__( 'Backup wurde erfolgreich erstellt!', 'kulturhaus-events' ) . '</p></div>';
+				} elseif ( isset( $_GET['backup_error'] ) ) {
+					echo '<div class="notice notice-error inline"><p>' . esc_html( urldecode( $_GET['backup_error'] ) ) . '</p></div>';
 				}
 				?>
 				
-				<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=kh-events-backup' ) ); ?>">
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<input type="hidden" name="action" value="kh_create_backup">
 					<?php wp_nonce_field( 'kh_backup_create_nonce' ); ?>
-					<input type="hidden" name="kh_create_backup" value="1">
 					<p>
 						<button type="submit" class="button button-primary">
 							<?php esc_html_e( 'Jetzt Backup erstellen', 'kulturhaus-events' ); ?>
@@ -341,5 +341,40 @@ class KH_Backup_Settings {
 				'sanitize_callback' => array( __CLASS__, 'save_settings' ),
 			)
 		);
+	}
+
+	/**
+	 * admin_post Handler für Backup-Erstellung.
+	 */
+	public static function handle_backup_creation(): void {
+		// Nonce prüfen
+		check_admin_referer( 'kh_backup_create_nonce' );
+
+		// Berechtigung prüfen
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( __( 'Keine Berechtigung.', 'kulturhaus-events' ) );
+		}
+
+		// Backup erstellen
+		$result = KH_Backup_Manager::create_backup( KH_Backup_Manager::BACKUP_FULL );
+
+		// Zurück zur Backup-Seite mit Erfolgsmeldung
+		$redirect_url = admin_url( 'admin.php?page=kh-events-backup' );
+		
+		if ( $result['success'] ) {
+			$redirect_url = add_query_arg( 'backup_created', '1', $redirect_url );
+		} else {
+			$redirect_url = add_query_arg( 'backup_error', urlencode( $result['message'] ), $redirect_url );
+		}
+
+		wp_redirect( $redirect_url );
+		exit;
+	}
+
+	/**
+	 * Hooks registrieren.
+	 */
+	public static function register_hooks(): void {
+		add_action( 'admin_post_kh_create_backup', array( __CLASS__, 'handle_backup_creation' ) );
 	}
 }
