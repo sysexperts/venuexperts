@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.25.3
+Stable tag: 1.26.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,15 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.26.0 =
+* **FEATURE:** Neuer Shortcode `[kh_footer]` - Professioneller Footer mit allen anpassbaren Elementen
+* **FEATURE:** Kontakt-Sektion (Telefon, E-Mail, Adresse)
+* **FEATURE:** 3 Link-Spalten (komplett anpassbar)
+* **FEATURE:** Social Media Icons (Facebook, Instagram, Twitter, YouTube, LinkedIn)
+* **FEATURE:** Copyright-Bar
+* **DESIGN:** Modernes Footer-Design im Kulturhaus Design-System
+* **UX:** Alle Texte und Links über Shortcode-Parameter anpassbar
 
 = 1.25.3 =
 * **FIX:** Archive CSS wird jetzt immer geladen (nicht nur auf Archiv-Seiten)

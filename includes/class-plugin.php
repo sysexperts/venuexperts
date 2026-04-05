@@ -268,6 +268,15 @@ class KH_Plugin {
 			'all'
 		);
 
+		// Footer CSS immer laden (für Footer-Shortcode)
+		wp_enqueue_style(
+			'kh-events-footer',
+			KH_EVENTS_PLUGIN_URL . 'assets/css/footer.css',
+			array(),
+			KH_EVENTS_VERSION,
+			'all'
+		);
+
 		// Program JS für Filter
 		wp_enqueue_script(
 			'kh-events-program',

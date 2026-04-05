@@ -1,0 +1,198 @@
+/**
+ * Footer Design
+ * Professioneller Footer im Kulturhaus Design-System
+ *
+ * @package KulturhausEvents
+ * @since   1.26.0
+ */
+
+/* Footer Container */
+.kh-footer {
+	width: 100%;
+	padding: 60px 0 0;
+	margin-top: 80px;
+}
+
+.kh-footer__container {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 0 40px 60px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 40px;
+}
+
+/* Footer Columns */
+.kh-footer__column {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.kh-footer__title {
+	font-size: 18px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin: 0 0 8px 0;
+	color: inherit;
+}
+
+/* Contact Section */
+.kh-footer__contact {
+	margin: 0 0 12px 0;
+	line-height: 1.6;
+	font-size: 14px;
+}
+
+.kh-footer__contact strong {
+	font-weight: 700;
+	opacity: 0.8;
+}
+
+.kh-footer__contact a {
+	color: inherit;
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+.kh-footer__contact a:hover {
+	color: #dc143c;
+}
+
+/* Links */
+.kh-footer__links {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.kh-footer__links li {
+	margin: 0;
+	padding: 0;
+}
+
+.kh-footer__links a {
+	color: inherit;
+	text-decoration: none;
+	font-size: 14px;
+	transition: all 0.3s ease;
+	display: inline-block;
+	position: relative;
+}
+
+.kh-footer__links a::after {
+	content: '';
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background: #dc143c;
+	transition: width 0.3s ease;
+}
+
+.kh-footer__links a:hover {
+	color: #dc143c;
+	transform: translateX(4px);
+}
+
+.kh-footer__links a:hover::after {
+	width: 100%;
+}
+
+/* Social Media */
+.kh-footer__social {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.kh-footer__social a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.1);
+	color: inherit;
+	transition: all 0.3s ease;
+}
+
+.kh-footer__social a:hover {
+	background: #dc143c;
+	transform: translateY(-4px);
+	box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+}
+
+.kh-footer__social svg {
+	width: 20px;
+	height: 20px;
+}
+
+/* Copyright Bar */
+.kh-footer__bottom {
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	padding: 24px 40px;
+	text-align: center;
+}
+
+.kh-footer__copyright {
+	margin: 0;
+	font-size: 14px;
+	opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+	.kh-footer__container {
+		grid-template-columns: repeat(2, 1fr);
+		padding: 0 30px 40px;
+	}
+}
+
+@media (max-width: 768px) {
+	.kh-footer {
+		padding: 40px 0 0;
+		margin-top: 60px;
+	}
+
+	.kh-footer__container {
+		grid-template-columns: 1fr;
+		padding: 0 20px 30px;
+		gap: 32px;
+	}
+
+	.kh-footer__title {
+		font-size: 16px;
+	}
+
+	.kh-footer__bottom {
+		padding: 20px;
+	}
+
+	.kh-footer__copyright {
+		font-size: 12px;
+	}
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	.kh-footer__contact a,
+	.kh-footer__links a,
+	.kh-footer__social a {
+		transition: none;
+	}
+
+	.kh-footer__links a:hover {
+		transform: none;
+	}
+
+	.kh-footer__social a:hover {
+		transform: none;
+	}
+}
