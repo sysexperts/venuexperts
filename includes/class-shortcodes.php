@@ -1652,11 +1652,22 @@ class KH_Shortcodes {
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$start_date = get_post_meta( get_the_ID(), '_kh_event_start_date', true );
-			$month_key  = gmdate( 'Y-m', strtotime( $start_date ) );
+			
+			// Skip events without start date
+			if ( empty( $start_date ) ) {
+				continue;
+			}
+			
+			$timestamp = strtotime( $start_date );
+			if ( ! $timestamp ) {
+				continue;
+			}
+			
+			$month_key  = gmdate( 'Y-m', $timestamp );
 			
 			if ( ! isset( $events_by_month[ $month_key ] ) ) {
 				$events_by_month[ $month_key ] = array(
-					'month_name' => wp_date( 'F Y', strtotime( $start_date ) ),
+					'month_name' => wp_date( 'F Y', $timestamp ),
 					'events'     => array(),
 				);
 			}

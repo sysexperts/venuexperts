@@ -4,7 +4,7 @@ Tags: events, calendar, veranstaltungen, kulturhaus, barrierefreiheit
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 1.25.0
+Stable tag: 1.25.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,12 @@ Features:
 * **Veranstaltungsfilter** - Ermöglicht Filterung nach Datum und Kategorie
 
 == Changelog ==
+
+= 1.25.1 =
+* **CHANGE:** Grid auf 4 Spalten geändert (mehr Events sichtbar)
+* **CHANGE:** Event-Cards verkleinert mit reduziertem Gap (24px)
+* **FIX:** Monats-Gruppierung robuster - überspringt Events ohne Datum
+* **UX:** Responsive Breakpoints angepasst (4/3/2/1 Spalten)
 
 = 1.25.0 =
 * **FEATURE:** Neuer Shortcode `[kh_event_archive]` - Veranstaltungsübersicht mit Monats-Gruppierung

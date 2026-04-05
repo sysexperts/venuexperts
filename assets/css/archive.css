@@ -58,8 +58,8 @@
 /* Events Grid */
 .kh-events-grid {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 40px;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 24px;
 	margin-bottom: 40px;
 }
 
@@ -162,10 +162,17 @@
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
+	.kh-events-grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+	}
+}
+
+@media (max-width: 1024px) {
 	.kh-events-grid {
 		grid-template-columns: repeat(2, 1fr);
-		gap: 30px;
+		gap: 20px;
 	}
 }
 
@@ -176,6 +183,6 @@
 
 	.kh-events-grid {
 		grid-template-columns: 1fr;
-		gap: 24px;
+		gap: 20px;
 	}
 }
